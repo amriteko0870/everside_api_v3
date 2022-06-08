@@ -10,6 +10,7 @@ import time
 from datetime import datetime as dt
 import datetime
 import re
+from itertools import groupby
 from operator import itemgetter     
 #----------------------------restAPI--------------------------------------------------
 from rest_framework.decorators import parser_classes
@@ -25,8 +26,8 @@ from apiApp.extra_vars import region_names
 
 # Create your views here.
 #-------------- Global Variable-------------------------------------------------------
-timestamp_sub = 86400 #+19800
-timestamp_start = 0#+19800
+timestamp_sub = 86400 +19800
+timestamp_start = 0+19800
 #--------------------------- Filters---------------------------------------------------
 class roundRating(Func):
     function = 'ROUND'
@@ -385,6 +386,7 @@ def totalComments(request,format=None):
                                                             label = F('sentiment_label'),
                                                             timestamp = F('SURVEY_MONTH'), 
                                                             time = F('TIMESTAMP'),
+                                                            clinic = F('NPSCLINIC'),
                                                             question_type = V('REASONNPSSCORE', output_field=CharField())
                                                             
                                                 )
@@ -437,9 +439,9 @@ def positiveComments(request,format=None):
                                                             question_type = V('REASONNPSSCORE', output_field=CharField())
 
                                                 )
-
+            positive_comments = positive_comments.exclude(review = '  ')
             positive_comments= sorted(positive_comments ,key=itemgetter('time'),reverse=True)    
-        return Response({'Message':'True','data':positive_comments})
+        return Response({'Message':'True','count':len(positive_comments),'data':positive_comments})
     except:
         return Response({'Message':'FALSE'}) 
 
@@ -487,9 +489,9 @@ def negativeComments(request,format=None):
                                                             question_type = V('REASONNPSSCORE', output_field=CharField())
 
                                                 )
-
+            negative_comments = negative_comments.exclude(review = '  ')
             negative_comments= sorted(negative_comments ,key=itemgetter('time'),reverse=True)    
-        return Response({'Message':'True','data':negative_comments})
+        return Response({'Message':'True','count':len(negative_comments),'data':negative_comments})
     except:
         return Response({'Message':'FALSE'}) 
 
@@ -536,9 +538,9 @@ def neutralComments(request,format=None):
                                                             question_type = V('REASONNPSSCORE', output_field=CharField())
 
                                                 )
-
+            neutral_comments = neutral_comments.exclude(review = '  ')
             neutral_comments= sorted(neutral_comments ,key=itemgetter('time'),reverse=True)    
-        return Response({'Message':'True','data':neutral_comments})
+        return Response({'Message':'True','count':len(neutral_comments),'data':neutral_comments})
     except:
         return Response({'Message':'FALSE'}) 
 
@@ -585,9 +587,9 @@ def extremeComments(request,format=None):
                                                             question_type = V('REASONNPSSCORE', output_field=CharField())
 
                                                 )
-
+            extreme_comments = extreme_comments.exclude(review = '  ')
             extreme_comments= sorted(extreme_comments ,key=itemgetter('time'),reverse=True)    
-        return Response({'Message':'True','data':extreme_comments})
+        return Response({'Message':'True','count':len(extreme_comments),'data':extreme_comments})
     except:
         return Response({'Message':'FALSE'})
 
@@ -634,7 +636,7 @@ def alertComments(request,format=None):
                                                             question_type = V('REASONNPSSCORE', output_field=CharField())
 
                                                 )
-
+            alert_comments = alert_comments.exclude(review = '  ')
             alert_comments= sorted(alert_comments ,key=itemgetter('time'),reverse=True)    
         return Response({'Message':'True','data':alert_comments})
     except:
@@ -989,103 +991,4 @@ def clientData(request,format=None):
                                           )\
                                  .order_by('client_name')
             clients = sorted(list(clients), key=itemgetter('average_nps'),reverse=True)
-        return Response({'Message':'True','data':clients,'parent_client_names':parent_client_names})        
-
-
-
-# @api_view(['GET'])
-# def groupcheck(request,format=None):
-#     clinic = everside_nps.objects.annotate(clinic=F('NPSCLINIC'))\
-#                                  .values('clinic')\
-#                                  .annotate(
-#                                         average_nps=twoDecimal(Avg('NPS')),
-#                                         rating = roundRating(Avg('NPS')/2),
-#                                           )\
-#                                  .order_by('-average_nps')
-#     return Response({'Message':'True','data':clinic})
-
-                     
-#---------------------For Database upload----------------------------------------------
-
-# def index(request):
-#     df = pd.read_csv('01_final_2018_2020.csv')
-#     for i in range(1,df.shape[0]):
-#         data = everside_nps(
-#         REVIEW_ID = list(df['ID'])[i],
-#         MEMBER_ID = list(df['MEMBER_ID'])[i],
-#         NPSCLINIC = list(df['NPSCLINIC__C'])[i],
-#         SURVEYDATE = list(df['SURVEYDATE__C'])[i],
-#         SURVEY_MONTH = list(df['SURVEY_MONTH'])[i],
-#         SURVEY_YEAR = list(df['SURVEY_YEAR'])[i],
-#         SURVEYNUMBER = list(df['SURVEYNUMBER__C'])[i],
-#         NPS = list(df['NPS'])[i],
-#         REASONNPSSCORE = list(df['REASONNPSSCORE__C'])[i],
-#         WHATDIDWELLWITHAPP = list(df['WHATDIDWELLWITHAPP__C'])[i],
-#         WHATDIDNOTWELLWITHAPP = list(df['WHATDIDNOTWELLWITHAPP__C'])[i],
-#         HOUSEHOLD_ID = list(df['HOUSEHOLD_ID'])[i],
-#         MEMBER_CITY = list(df['MEMBER_CITY'])[i],
-#         MEMBER_STATE = list(df['MEMBER_STATE'])[i],
-#         MEMBER_ZIP = list(df['MEMBER_ZIP'])[i],
-#         CLINIC_ID = list(df['CLINIC_ID'])[i],
-#         CLINIC_STREET = list(df['CLINIC_STREET'])[i],
-#         CLINIC_CITY = list(df['CLINIC_CITY'])[i],
-#         CLINIC_STATE = list(df['CLINIC_STATE'])[i],
-#         CLINIC_ZIP = list(df['CLINIC_ZIP'])[i],
-#         CLINIC_TYPE = list(df['CLINIC_TYPE'])[i],
-#         PROVIDER_NAME = list(df['PROVIDER_NAME'])[i],
-#         PROVIDERTYPE = list(df['PROVIDERTYPE__C'])[i],
-#         PROVIDER_CATEGORY = list(df['PROVIDER_CATEGORY__C'])[i],
-#         CLIENT_ID = list(df['CLIENT_ID'])[i],
-#         CLIENT_NAICS = list(df['CLIENT_NAICS'])[i],
-#         sentiment_label = list(df['sentiment_label'])[i],
-#         nps_label = list(df['nps_label'])[i],
-#         CLIENT_NAME = list(df['CLIENT NAME'])[i],
-#         PARENT_CLIENT_NAME = list(df['PARENT CLIENT NAME'])[i],
-#         PARENT_CLIENT_ID = list(df['PARENT_CLIENT_ID'])[i],
-#         TIMESTAMP = time.mktime(datetime.datetime.strptime(list(df['SURVEYDATE__C'])[i],"%m/%d/%Y").timetuple())
-#         )
-#         data.save()
-#         # print(ID,'\n',
-#         #         MEMBER_ID,'\n',
-#         #         NPSCLINIC,'\n',
-#         #         SURVEYDATE,'\n',
-#         #         SURVEY_MONTH,'\n',
-#         #         SURVEY_YEAR,'\n',
-#         #         SURVEYNUMBER,'\n',
-#         #         NPS,'\n',
-#         #         REASONNPSSCORE,'\n',
-#         #         WHATDIDWELLWITHAPP,'\n',
-#         #         WHATDIDNOTWELLWITHAPP,'\n',
-#         #         HOUSEHOLD_ID,'\n',
-#         #         MEMBER_CITY,'\n',
-#         #         MEMBER_STATE,'\n',
-#         #         MEMBER_ZIP,'\n',
-#         #         CLINIC_ID,'\n',
-#         #         CLINIC_STREET,'\n',
-#         #         CLINIC_CITY,'\n',
-#         #         CLINIC_STATE,'\n',
-#         #         CLINIC_ZIP,'\n',
-#         #         CLINIC_TYPE,'\n',
-#         #         PROVIDER_NAME,'\n',
-#         #         PROVIDERTYPE,'\n',
-#         #         PROVIDER_CATEGORY,'\n',
-#         #         CLIENT_ID,'\n',
-#         #         CLIENT_NAICS,'\n',
-#         #         sentiment_label,'\n',
-#         #         nps_label,'\n',
-#         #         CLIENT_NAME,'\n',
-#         #         PARENT_CLIENT_NAME,'\n',
-#         #         PARENT_CLIENT_ID,)
-#         print(i)
-
-#     return HttpResponse('Hello')
-
-
-
-#------------------------------------------
-
- 
-
-# def index(request):
-#     #everside_nps.objects.filter(WHATDIDWELLWITHAPP__length__lte = 2).update(WHATDIDWELLWITHAPP = 'nan')
-#     return HttpResponse('hello')
+        return Response({'Message':'True','data':clients,'parent_client_names':parent_client_names})
