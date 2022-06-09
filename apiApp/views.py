@@ -1,17 +1,21 @@
 
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
-from django.db.models import Avg,Count,Case, When, IntegerField,Sum,FloatField,CharField
-from django.db.models import F,Func
-from django.db.models import Value as V
-from django.db.models.functions import Concat,Cast,Substr
+import numpy as np
 import pandas as pd
 import time
 from datetime import datetime as dt
 import datetime
 import re
 from itertools import groupby
-from operator import itemgetter     
+from operator import itemgetter 
+import bisect  
+#-------------------------Django Modules---------------------------------------------
+
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.db.models import Avg,Count,Case, When, IntegerField,Sum,FloatField,CharField
+from django.db.models import F,Func
+from django.db.models import Value as V
+from django.db.models.functions import Concat,Cast,Substr
 #----------------------------restAPI--------------------------------------------------
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import MultiPartParser,FormParser
@@ -22,7 +26,7 @@ from rest_framework.parsers import MultiPartParser,FormParser
 #--------------------------Models-----------------------------------------------------
 from apiApp.models import everside_nps
 #--------------------------extra libs------------------------------------------------
-from apiApp.extra_vars import region_names
+from apiApp.extra_vars import region_names,prob_func
 
 # Create your views here.
 #-------------- Global Variable-------------------------------------------------------
@@ -321,16 +325,14 @@ def totalCards(request,format=None):
             state = region
             if '' not in region:
                 survey_comments = survey_comments.filter(CLINIC_STATE__in = state)
-                alert_comments1 = alert_comments1.filter(CLINIC_STATE__in = state)
-                alert_comments2 = alert_comments2.filter(CLINIC_STATE__in = state)
+                alert_comments = alert_comments.filter(CLINIC_STATE__in = state)
                 clinics = clinics.filter(CLINIC_STATE__in = state)
                 doctors = doctors.filter(CLINIC_STATE__in = state)
                 clients = clients.filter(CLINIC_STATE__in = state)
 
             if '' not in clinic:
                 survey_comments = survey_comments.filter(NPSCLINIC__in = clinic)
-                alert_comments1 = alert_comments1.filter(NPSCLINIC__in = clinic)
-                alert_comments2 = alert_comments2.filter(NPSCLINIC__in = clinic)
+                alert_comments = alert_comments.filter(NPSCLINIC__in = clinic)
                 clinics = clinics.filter(NPSCLINIC__in = clinic)
                 doctors = doctors.filter(NPSCLINIC__in = clinic)
                 clients = clients.filter(NPSCLINIC__in = clinic)
@@ -677,20 +679,28 @@ def npsOverTime(request,format=None):
                                                                 When(nps_label='Promoter',then=1),
                                                                 default=0,
                                                                 output_field=IntegerField()
-                                                                )),FloatField())/Cast(Count('REVIEW_ID'),FloatField()))*100),\
+                                                                )),FloatField()))),\
                                                     passive =  twoDecimal((Cast(Sum(Case(
                                                                 When(nps_label='Passive',then=1),
                                                                 default=0,
                                                                 output_field=IntegerField()
-                                                                )),FloatField())/Cast(Count('REVIEW_ID'),FloatField()))*100),\
+                                                                )),FloatField()))),\
                                                     detractor = twoDecimal((Cast(Sum(Case(
                                                                 When(nps_label='Detractor',then=1),
                                                                 default=0,
                                                                 output_field=IntegerField()
-                                                                )),FloatField())/Cast(Count('REVIEW_ID'),FloatField()))*100),\
+                                                                )),FloatField()))),\
                                                     month = Substr(F('SURVEY_MONTH'),1,3),\
                                                     year = Cast(F('SURVEY_YEAR'),IntegerField()),
-                                                    nps = twoDecimal(F('promoter')-F('detractor'))
+                                                    nps_abs = twoDecimal(F('promoter')-F('detractor')),
+                                                    nps = Case(
+                                                            When(
+                                                                nps_abs__lt = 0,
+                                                                then = 0    
+                                                                ),
+                                                                default=F('nps_abs'),
+                                                                output_field=FloatField()
+                                                              )
                                                 )\
                                             .order_by('SURVEY_MONTH')
             
@@ -728,7 +738,6 @@ def nssOverTime(request,format=None):
 
             if '' not in clinic:
                 nss = nss.filter(NPSCLINIC__in = clinic)
-
             nss = nss.values('SURVEY_MONTH' ).annotate(
                                                     positive = twoDecimal((Cast(Sum(Case(
                                                                 When(sentiment_label='Positive',then=1),
@@ -752,7 +761,16 @@ def nssOverTime(request,format=None):
                                                                 )),FloatField())/Cast(Count('REVIEW_ID'),FloatField()))*100),\
                                                     month = Substr(F('SURVEY_MONTH'),1,3),\
                                                     year = Cast(F('SURVEY_YEAR'),IntegerField()),
-                                                    nss = twoDecimal(F('positive')-F('negative')-F('extreme'))
+                                                    nss_abs = twoDecimal(F('positive')-F('negative')-F('extreme')),
+                                                    nss = Case(
+                                                            When(
+                                                                nss_abs__lt = 0,
+                                                                then = 0    
+                                                                ),
+                                                                default=F('nss_abs'),
+                                                                output_field=FloatField()
+                                                              )
+                                                            
 
             )   
             nss = list(nss)
@@ -864,7 +882,36 @@ def npsVsSentiments(request,format=None):
                                                         output_field=IntegerField()
                                                         )),FloatField())/Cast(Count('REVIEW_ID'),FloatField()))*100)
                                         ).order_by('sentiment_label')
-        return Response({'Message':'TRUE','data':[positive[0],negative[0],neutral[0],extreme[0]]})   
+            if(len(list(positive)) == 0):
+                possitive = [{
+                                "sentiment_label": "Positive",
+                                "promoter": 0,
+                                "passive": 0,
+                                "detractor": 0
+                            }]
+            if(len(list(negative)) == 0):
+                negative = [{
+                                "sentiment_label": "Positive",
+                                "promoter": 0,
+                                "passive": 0,
+                                "detractor": 0
+                            }]
+            if(len(list(neutral)) == 0):
+                neutral = [{
+                                "sentiment_label": "Positive",
+                                "promoter": 0,
+                                "passive": 0,
+                                "detractor": 0
+                            }]
+            if(len(list(extreme)) == 0):
+                extreme = [{
+                                "sentiment_label": "Positive",
+                                "promoter": 0,
+                                "passive": 0,
+                                "detractor": 0
+                            }]
+            final_data = list(positive)+list(negative)+list(neutral)+list(extreme)
+        return Response({'Message':'TRUE','data':final_data})   
     except:
         return Response({'Message':'FALSE'})
 
@@ -982,7 +1029,7 @@ def clientData(request,format=None):
                 clients = clients.filter(NPSCLINIC__in = clinic)
             parent_client_names = clients.values_list('PARENT_CLIENT_NAME',flat=True).distinct()
             parent_client_names = sorted(list(parent_client_names))
-            clients = everside_nps.objects.annotate(client_name=F('CLIENT_NAME'))\
+            clients = clients.annotate(client_name=F('CLIENT_NAME'))\
                                  .values('client_name')\
                                  .annotate(
                                         parent_client_name = F('PARENT_CLIENT_NAME'),
@@ -992,3 +1039,176 @@ def clientData(request,format=None):
                                  .order_by('client_name')
             clients = sorted(list(clients), key=itemgetter('average_nps'),reverse=True)
         return Response({'Message':'True','data':clients,'parent_client_names':parent_client_names})
+
+#--------------------------------Enagement Moddel------------------------------------------------------
+
+@api_view(['POST'])
+@parser_classes([MultiPartParser,FormParser])
+def egMemberPercentile(request,format=None):
+    # try:
+        up_file = request.FILES.getlist('file')
+        df = pd.read_csv(up_file[0])
+        out = prob_func(df)
+        out_prob = list(out['probability'])
+        low = 0 # n < 0.5
+        med = 0 # 0.5 < n < 0.75
+        high = 0 # 0.75 < n
+        graph = [] 
+        p_values = [0,1,25,33,50,66,75,95,99,100]
+        for i in p_values:
+            p = np.percentile(out_prob,i)
+            percentile_name = "P"+str(i)
+            percentile_value = round(p,3)
+            member_score = out_prob.count(p)
+            if p < 0.5:
+                low = low + 1
+            elif 0.5 <= p < 0.75:
+                med = med + 1
+            else:
+                high = high + 1
+
+            frame = {
+                'percentile_name':percentile_name,
+                'percentile_value':percentile_value,
+                'member_score':member_score
+            }
+            graph.append(frame)
+            percentage = {
+                'low':str(low*10)+"%",
+                'medium':str(low*10+med*10)+"%",
+                'high':'100%',
+            }
+#--------------------------------------Card Data----------------------------------------------------
+        rows = df.shape[0]
+        columns = df.shape[1]
+        client_count = len(set(list(df['CLIENT_ID'])))
+        member_count = len(set(list(df['MEMBER_ID'])))
+        try:
+            opt_in = list(df['CLIENT_ENROLL_CONTRACT_TYP']).count('Opt In')
+        except:
+            opt_in = 0
+        try:
+            flat_fee = list(df['CLIENT_ENROLL_CONTRACT_TYP']).count('Flat Fee')
+        except:
+            flat_fee = 0
+        try:
+            all_in_eligible = list(df['CLIENT_ENROLL_CONTRACT_TYP']).count('All-In-Eligible')
+        except:
+            all_in_eligible = 0
+        try:
+            near_site = list(df['CLIENT_DEF_HC_TYPE']).count('Near Site')
+        except:
+            near_site = 0
+        try:
+            on_site = list(df['CLIENT_DEF_HC_TYPE']).count('On Site')
+        except:
+            on_site = 0
+        cards_data = [
+                {
+                    'name':'Rows',
+                    'value':rows
+                },
+                {
+                    'name':'Columns',
+                    'value':columns
+                },
+                {
+                    'name':'Clients',
+                    'value':client_count
+                },
+                {
+                    'name':'Members',
+                    'value':member_count
+                },
+                {
+                    'name':'Opt In',
+                    'value':opt_in
+                },
+                {
+                    'name':'Flat Fee',
+                    'value':flat_fee
+                },
+                {
+                    'name':'All In Eligible',
+                    'value':all_in_eligible
+                },
+                {
+                    'name':'Near Site',
+                    'value':near_site
+                },
+                {
+                    'name':'On Site',
+                    'value':on_site
+                },
+        ]
+#-----------------------------------------Age Graph--------------------------------------------
+        group_list = [(0,12),(13,19),(20,29),(30,39),(40,49),(50,59),(60,69),(70,79),(80,89),(90,1000)]
+        age_list = list(df['AGE'])
+        age_graph = []
+        for i in group_list:
+            if(i[1]<90):  
+                age_graph.append(
+                                {
+                                    'groupName':str(i[0])+'-'+str(i[1]),
+                                    'groupValue': sum(map(age_list.count, range(i[0],i[1]+1)))
+
+                                }) 
+            else:
+                  age_graph.append(
+                                {
+                                    'groupName':str(i[0])+'+',
+                                    'groupValue': sum(map(age_list.count, range(i[0],i[1]+1)))
+
+                                })         
+
+#---------------------------------------Gender Chart-----------------------------------------------------
+        gender_list = list(df['GENDER'])
+        gender_list = list(map(lambda x: x.lower(), gender_list))
+        try:
+            male_count = gender_list.count('male')
+        except:
+            male_count = 0
+        try:
+            female_count = gender_list.count('female')
+        except:
+            female_count = 0
+        try:
+            others_count = gender_list.count('others')
+        except:
+            others_count = 0
+        gender = {
+              'total_male':male_count,
+              'male':round((male_count/len(gender_list))*100,2),
+              'total_female':female_count,
+              'female':round((female_count/len(gender_list))*100,2),
+              'total_other':others_count,
+              'other': round((others_count/len(gender_list))*100,2),  
+        }
+        gender_pie = [{
+                        'label':'Male',
+                        'percentage': round((male_count/len(gender_list))*100,2),
+                        'color': '#39a0ed'
+                    },
+                    {
+                        'label':'Female',
+                        'percentage': round((female_count/len(gender_list))*100,2),
+                        'color': '#13c4a3'
+                    },
+                    {
+                        'label':'Other',
+                        'percentage': round((others_count/len(gender_list))*100,2),
+                        'color': '#d77a69'
+                    }]
+
+
+        return Response({'Message':'TRUE',
+                         'graph':graph,
+                         'percentage':percentage,
+                         'cards_data':cards_data,
+                         'age_graph':age_graph,
+                         'gender':gender,
+                         'gender_pie':gender_pie})
+        
+    # except:
+    #     return Response({'Message':"FALSE"})
+

@@ -22,6 +22,8 @@ urlpatterns = [
     path('providersData',views.providersData,name='providersData'),
     path('clinicData',views.clinicData,name='clinicData'),
     path('clientData',views.clientData,name='clientData'),
+    #------------------Engagement------------------------------
+    path('egMemberPercentile',views.egMemberPercentile,name='egMemberPercentile'),
     # path('groupcheck',views.groupcheck,name='groupcheck'),
     # path('',views.index,name='index'),
 ]
