@@ -1,11 +1,9 @@
-
 import numpy as np
 import pandas as pd
 import time
 from datetime import datetime as dt
 import datetime
 import re
-from itertools import groupby
 from operator import itemgetter 
 import bisect  
 #-------------------------Django Modules---------------------------------------------
@@ -55,12 +53,8 @@ def filterRegion(request,format=None):
             else:
                 end_date = str('1-')+str(int(end_year)+1)
             endDate = (time.mktime(datetime.datetime.strptime(end_date,"%m-%Y").timetuple())) - timestamp_sub         
-            frame = region_names() 
-            region = []
-            obj = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).exclude(CLINIC_STATE__isnull=True).exclude(CLINIC_STATE__exact='nan').values_list('CLINIC_STATE',flat=True).distinct()       
-            for i in obj:
-                region.append(str(frame[i])+','+str(i))
-                
+            obj = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).exclude(CLINIC_STATE__isnull=True).exclude(CLINIC_STATE__exact='nan').values_list('REGION',flat=True).distinct()
+            region = list(obj)
             region.sort()
         return Response({'Message':'TRUE','region':region})
     except:
@@ -85,7 +79,7 @@ def filterClinic(request,format=None):
             endDate = (time.mktime(datetime.datetime.strptime(end_date,"%m-%Y").timetuple())) - timestamp_sub  
             obj = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).values_list('NPSCLINIC',flat=True).distinct()    
             if '' not in region:
-                obj = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).filter(CLINIC_STATE__in=region).values_list('NPSCLINIC',flat=True).distinct()
+                obj = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).filter(REGION__in=region).values_list('NPSCLINIC',flat=True).distinct()
             data = list(obj)
             data.sort()
         return Response({'Message':'TRUE','clinic':data,})
@@ -142,10 +136,10 @@ def netPromoterScore(request,format=None):
             detractors_count = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).filter(nps_label = 'Detractor').values()
             state = region
             if '' not in state:
-                total_count = total_count.filter(CLINIC_STATE__in = state)
-                promoters_count = promoters_count.filter(CLINIC_STATE__in = state)
-                passive_count = passive_count.filter(CLINIC_STATE__in = state)
-                detractors_count = detractors_count.filter(CLINIC_STATE__in = state)
+                total_count = total_count.filter(REGION__in = state)
+                promoters_count = promoters_count.filter(REGION__in = state)
+                passive_count = passive_count.filter(REGION__in = state)
+                detractors_count = detractors_count.filter(REGION__in = state)
             if '' not in clinic:
                 total_count = total_count.filter(NPSCLINIC__in = clinic)
                 promoters_count = promoters_count.filter(NPSCLINIC__in = clinic)
@@ -232,10 +226,10 @@ def netSentimentScore(request,format=None):
 
             state = region
             if '' not in region:
-                total_count = total_count.filter(CLINIC_STATE__in = state)
-                positive_count = positive_count.filter(CLINIC_STATE__in = state)
-                negative_count = negative_count.filter(CLINIC_STATE__in = state)
-                extreme_count = extreme_count.filter(CLINIC_STATE__in = state)
+                total_count = total_count.filter(REGION__in = state)
+                positive_count = positive_count.filter(REGION__in = state)
+                negative_count = negative_count.filter(REGION__in = state)
+                extreme_count = extreme_count.filter(REGION__in = state)
             
             if '' not in clinic:
                 total_count = total_count.filter(NPSCLINIC__in = clinic)
@@ -324,11 +318,11 @@ def totalCards(request,format=None):
             clients = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).exclude(CLIENT_NAME__isnull=True).exclude(CLIENT_NAME__exact='nan').values_list('CLIENT_ID').distinct()
             state = region
             if '' not in region:
-                survey_comments = survey_comments.filter(CLINIC_STATE__in = state)
-                alert_comments = alert_comments.filter(CLINIC_STATE__in = state)
-                clinics = clinics.filter(CLINIC_STATE__in = state)
-                doctors = doctors.filter(CLINIC_STATE__in = state)
-                clients = clients.filter(CLINIC_STATE__in = state)
+                survey_comments = survey_comments.filter(REGION__in = state)
+                alert_comments = alert_comments.filter(REGION__in = state)
+                clinics = clinics.filter(REGION__in = state)
+                doctors = doctors.filter(REGION__in = state)
+                clients = clients.filter(REGION__in = state)
 
             if '' not in clinic:
                 survey_comments = survey_comments.filter(NPSCLINIC__in = clinic)
@@ -373,7 +367,7 @@ def totalComments(request,format=None):
 
             state = region
             if '' not in region:
-                all_comments = all_comments.filter(CLINIC_STATE__in = state)
+                all_comments = all_comments.filter(REGION__in = state)
                 
 
             if '' not in clinic:
@@ -422,7 +416,7 @@ def positiveComments(request,format=None):
 
             state = region
             if '' not in region:
-                positive_comments = positive_comments.filter(CLINIC_STATE__in = state)                
+                positive_comments = positive_comments.filter(REGION__in = state)                
 
             if '' not in clinic:
                 positive_comments = positive_comments.filter(NPSCLINIC__in = clinic)
@@ -472,7 +466,7 @@ def negativeComments(request,format=None):
 
             state = region
             if '' not in region:
-                negative_comments = negative_comments.filter(CLINIC_STATE__in = state)                
+                negative_comments = negative_comments.filter(REGION__in = state)                
 
             if '' not in clinic:
                 negative_comments = negative_comments.filter(NPSCLINIC__in = clinic)
@@ -521,7 +515,7 @@ def neutralComments(request,format=None):
 
             state = region
             if '' not in region:
-                neutral_comments = neutral_comments.filter(CLINIC_STATE__in = state)                
+                neutral_comments = neutral_comments.filter(REGION__in = state)                
 
             if '' not in clinic:
                 neutral_comments = neutral_comments.filter(NPSCLINIC__in = clinic)
@@ -570,7 +564,7 @@ def extremeComments(request,format=None):
 
             state = region
             if '' not in region:
-                extreme_comments = extreme_comments.filter(CLINIC_STATE__in = state)                
+                extreme_comments = extreme_comments.filter(REGION__in = state)                
 
             if '' not in clinic:
                 extreme_comments = extreme_comments.filter(NPSCLINIC__in = clinic)
@@ -619,7 +613,7 @@ def alertComments(request,format=None):
 
             state = region
             if '' not in region:
-                alert_comments = alert_comments.filter(CLINIC_STATE__in = state)                
+                alert_comments = alert_comments.filter(REGION__in = state)                
 
             if '' not in clinic:
                 alert_comments = alert_comments.filter(NPSCLINIC__in = clinic)
@@ -668,7 +662,7 @@ def npsOverTime(request,format=None):
             
             state = region
             if '' not in region:
-                nps = nps.filter(CLINIC_STATE__in = state)
+                nps = nps.filter(REGION__in = state)
                 
 
             if '' not in clinic:
@@ -733,7 +727,7 @@ def nssOverTime(request,format=None):
             
             state = region
             if '' not in region:
-                nss = nss.filter(CLINIC_STATE__in = state)
+                nss = nss.filter(REGION__in = state)
                 
 
             if '' not in clinic:
@@ -803,7 +797,7 @@ def npsVsSentiments(request,format=None):
             
             state = region
             if '' not in region:
-                all_data = all_data.filter(CLINIC_STATE__in = state)
+                all_data = all_data.filter(REGION__in = state)
                 
 
             if '' not in clinic:
@@ -891,21 +885,21 @@ def npsVsSentiments(request,format=None):
                             }]
             if(len(list(negative)) == 0):
                 negative = [{
-                                "sentiment_label": "Positive",
+                                "sentiment_label": "negative",
                                 "promoter": 0,
                                 "passive": 0,
                                 "detractor": 0
                             }]
             if(len(list(neutral)) == 0):
                 neutral = [{
-                                "sentiment_label": "Positive",
+                                "sentiment_label": "neutral",
                                 "promoter": 0,
                                 "passive": 0,
                                 "detractor": 0
                             }]
             if(len(list(extreme)) == 0):
                 extreme = [{
-                                "sentiment_label": "Positive",
+                                "sentiment_label": "Extreme",
                                 "promoter": 0,
                                 "passive": 0,
                                 "detractor": 0
@@ -940,13 +934,13 @@ def providersData(request,format=None):
             
             state = region
             if '' not in region:
-                providers = providers.filter(CLINIC_STATE__in = state)
+                providers = providers.filter(REGION__in = state)
                 
 
             if '' not in clinic:
                 providers = providers.filter(NPSCLINIC__in = clinic)
             
-            providers = everside_nps.objects.exclude(PROVIDER_NAME__in = ['nan']).annotate(provider_name = F('PROVIDER_NAME'))\
+            providers = providers.exclude(PROVIDER_NAME__in = ['nan']).annotate(provider_name = F('PROVIDER_NAME'))\
                                             .values('provider_name')\
                                             .annotate(
                                                     provider_type = F('PROVIDERTYPE'),
@@ -961,7 +955,7 @@ def providersData(request,format=None):
 
 @api_view(['GET'])
 def clinicData(request,format=None):
-    try:
+    # try:
         if request.method == 'GET':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
@@ -978,16 +972,13 @@ def clinicData(request,format=None):
             else:
                 end_date = str('1-')+str(int(end_year)+1)
             endDate = (time.mktime(datetime.datetime.strptime(end_date,"%m-%Y").timetuple())) - timestamp_sub 
-            clinic = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).values()
-            
+            clinic_data = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).values()
             state = region
             if '' not in region:
-                clinic = clinic.filter(CLINIC_STATE__in = state)
-                
-
+                clinic_data = clinic_data.filter(REGION__in = state)
             if '' not in clinic:
-                clinic = clinic.filter(NPSCLINIC__in = clinic)
-            clinic = everside_nps.objects.annotate(clinic=F('NPSCLINIC'))\
+                clinic_data = clinic_data.filter(NPSCLINIC__in = clinic)
+            clinic_data = clinic_data.annotate(clinic=F('NPSCLINIC'))\
                                  .values('clinic')\
                                  .annotate(
                                         average_nps=twoDecimal(Avg('NPS')),
@@ -995,12 +986,13 @@ def clinicData(request,format=None):
                                         city = F('CLINIC_CITY'),
                                         state = F('CLINIC_STATE'),
                                         address = Concat('CLINIC_CITY', V(', '), 'CLINIC_STATE'),
+                                        region = F('REGION')
                                           )\
                                  .order_by('clinic')
-            clinic = sorted(list(clinic), key=itemgetter('average_nps'),reverse=True)
+            clinic = sorted(list(clinic_data), key=itemgetter('average_nps'),reverse=True)
         return Response({'Message':'True','data':clinic})
-    except:
-        return Response({'Message':'FALSE'})
+    # except:
+    #     return Response({'Message':'FALSE'})
 
 @api_view(['GET'])
 def clientData(request,format=None):
@@ -1024,7 +1016,7 @@ def clientData(request,format=None):
             clients = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).values()
             state = region
             if '' not in region:
-                clients = clients.filter(CLINIC_STATE__in = state)
+                clients = clients.filter(REGION__in = state)
             if '' not in clinic:
                 clients = clients.filter(NPSCLINIC__in = clinic)
             parent_client_names = clients.values_list('PARENT_CLIENT_NAME',flat=True).distinct()
@@ -1045,7 +1037,7 @@ def clientData(request,format=None):
 @api_view(['POST'])
 @parser_classes([MultiPartParser,FormParser])
 def egMemberPercentile(request,format=None):
-    # try:
+    try:
         up_file = request.FILES.getlist('file')
         df = pd.read_csv(up_file[0])
         out = prob_func(df)
@@ -1209,6 +1201,6 @@ def egMemberPercentile(request,format=None):
                          'gender':gender,
                          'gender_pie':gender_pie})
         
-    # except:
-    #     return Response({'Message':"FALSE"})
+    except:
+        return Response({'Message':"FALSE"})
 

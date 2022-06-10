@@ -34,5 +34,6 @@ class everside_nps(models.Model):
     CLIENT_NAME = models.CharField(max_length=100)
     PARENT_CLIENT_NAME = models.CharField(max_length=100)
     PARENT_CLIENT_ID = models.CharField(max_length=100)
+    REGION = models.CharField(max_length=100,default=' ')
     TIMESTAMP = models.BigIntegerField()
 
