@@ -1,3 +1,4 @@
+from ast import mod
 from django.db import models
 
 # Create your models here.
@@ -37,3 +38,12 @@ class everside_nps(models.Model):
     REGION = models.CharField(max_length=100,default=' ')
     TIMESTAMP = models.BigIntegerField()
 
+
+class user_data(models.Model):
+    FIRST_NAME = models.CharField(max_length=100)
+    LAST_NAME = models.CharField(max_length=100)
+    USERNAME = models.CharField(max_length=100,unique=True,null=False)
+    EMAIL = models.EmailField(unique=True,null=False)
+    PASSWORD = models.CharField(max_length=250)
+    USER_TYPE = models.CharField(max_length=3)
+    TOKEN = models.CharField(max_length=300,default='0')

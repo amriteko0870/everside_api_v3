@@ -1,3 +1,4 @@
+from pyexpat import model
 import numpy as np
 import pandas as pd
 import time
@@ -5,15 +6,14 @@ from datetime import datetime as dt
 import datetime
 import re
 from operator import itemgetter 
-import bisect  
 #-------------------------Django Modules---------------------------------------------
-
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.db.models import Avg,Count,Case, When, IntegerField,Sum,FloatField,CharField
 from django.db.models import F,Func
 from django.db.models import Value as V
 from django.db.models.functions import Concat,Cast,Substr
+from django.contrib.auth.hashers import make_password,check_password
 #----------------------------restAPI--------------------------------------------------
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import MultiPartParser,FormParser
@@ -22,30 +22,32 @@ from rest_framework.response import Response
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import MultiPartParser,FormParser
 #--------------------------Models-----------------------------------------------------
-from apiApp.models import everside_nps
+from apiApp.models import everside_nps, user_data
 #--------------------------extra libs------------------------------------------------
 from apiApp.extra_vars import region_names,prob_func
-
 # Create your views here.
-#-------------- Global Variable-------------------------------------------------------
+#-------------- Global Variable--------------------------------------------------------
 timestamp_sub = 86400 +19800
 timestamp_start = 0+19800
-#--------------------------- Filters---------------------------------------------------
+#----------------------------Annotation Functions--------------------------------------
 class roundRating(Func):
     function = 'ROUND'
     template='%(function)s(%(expressions)s, 1)'
 class twoDecimal(Func):
     function = 'ROUND'
     template='%(function)s(%(expressions)s, 2)'
-
-@api_view(['GET'])
+#--------------------------- Filters---------------------------------------------------
+@api_view(['POST'])
 def filterRegion(request,format=None):
     try:
-        if request.method == 'GET':
+        if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
             end_month = request.GET.get('end_month')
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -60,16 +62,19 @@ def filterRegion(request,format=None):
     except:
         return Response({'Message':'FALSE'})
 
-@api_view(['GET'])
+@api_view(['POST'])
 def filterClinic(request,format=None):
     try:
-        if request.method == 'GET':
+        if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
             end_month = request.GET.get('end_month')
             region = request.GET.get('region')
             region = re.split(r"-|,", region)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -94,33 +99,33 @@ def userLogin(request,format=None):
             data = request.data
             username = str(data['username'])
             password = str(data['password'])
-        
-            if username == 'everside_user' or username == 'user@everside.com':
-                if password == 'Test@1234':
-                    return Response({'Message':'TRUE'})
-                else:
-                    return Response({'Message':'FALSE'})
-            elif username=='a':
-                if password=='a':
-                    return Response({'Message':'TRUE'})
-                else:
-                    return Response({'Message':'FALSE'})
-            else:
-                return Response({'Message':'FALSE'})
+            data = user_data.objects.filter(USERNAME = username).values()
+            if (check_password(password,data[0]['PASSWORD'])):
+                token = data[0]['TOKEN']
+                u_name = data[0]['USERNAME']
+                return Response({'Message':'TRUE','username':u_name,'token':token})
         except:
-            return Response({'Message':'FALSE'})
+                return Response({'Message':'FALSE'})
+
+           
             
 #---------------------For Dashboards--------------------------------------------------
-@api_view(['GET'])
+@api_view(['POST'])
 def netPromoterScore(request,format=None):
-    try:
-        if request.method == 'GET':
+    # try:
+        if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
             end_month = request.GET.get('end_month')
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
+            # print('header => ',(request.headers)['Authorization'])
+            # print('body => ',(request.data)['username'])
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                # return Response({'Message':'FALSE'})
+                pass
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)       
             start_date = str(start_month)+'-'+str(start_year)
@@ -196,14 +201,14 @@ def netPromoterScore(request,format=None):
             return Response({'Message':'TRUE',
                                 'nps':nps,
                                         'nps_pie':nps_pie})
-    except:
-        return Response({'Message':'FALSE'})
+    # except:
+    #     return Response({'Message':'FALSE'})
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def netSentimentScore(request,format=None):
     try:
-        if request.method == 'GET':
+        if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -211,7 +216,10 @@ def netSentimentScore(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -292,10 +300,10 @@ def netSentimentScore(request,format=None):
         return Response({'Message':'FALSE'})
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def totalCards(request,format=None):
     try:
-        if request.method == 'GET':
+        if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -303,7 +311,10 @@ def totalCards(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -343,10 +354,10 @@ def totalCards(request,format=None):
     except:
         return Response({'Message':'FALSE'}) 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def totalComments(request,format=None):
     try:
-        if request.method == 'GET':     
+        if request.method == 'POST':     
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -354,7 +365,10 @@ def totalComments(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -392,10 +406,10 @@ def totalComments(request,format=None):
     except:
         return Response({'Message':'FALSE'}) 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def positiveComments(request,format=None):
     try:
-        if request.method == 'GET':     
+        if request.method == 'POST':     
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -403,7 +417,10 @@ def positiveComments(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -442,10 +459,10 @@ def positiveComments(request,format=None):
         return Response({'Message':'FALSE'}) 
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def negativeComments(request,format=None):
     try:
-        if request.method == 'GET':     
+        if request.method == 'POST':     
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -453,7 +470,10 @@ def negativeComments(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -491,10 +511,10 @@ def negativeComments(request,format=None):
     except:
         return Response({'Message':'FALSE'}) 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def neutralComments(request,format=None):
     try:
-        if request.method == 'GET':     
+        if request.method == 'POST':     
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -502,7 +522,10 @@ def neutralComments(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -540,10 +563,10 @@ def neutralComments(request,format=None):
     except:
         return Response({'Message':'FALSE'}) 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def extremeComments(request,format=None):
     try:
-        if request.method == 'GET':     
+        if request.method == 'POST':     
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -551,7 +574,10 @@ def extremeComments(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -589,10 +615,10 @@ def extremeComments(request,format=None):
     except:
         return Response({'Message':'FALSE'})
 
-@api_view(['GET'])
+@api_view(['POST'])
 def alertComments(request,format=None):
     try:
-        if request.method == 'GET':     
+        if request.method == 'POST':     
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -600,7 +626,10 @@ def alertComments(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -639,10 +668,10 @@ def alertComments(request,format=None):
         return Response({'Message':'FALSE'}) 
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def npsOverTime(request,format=None):
     try:
-        if request.method == 'GET':     
+        if request.method == 'POST':     
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -650,7 +679,10 @@ def npsOverTime(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -704,10 +736,10 @@ def npsOverTime(request,format=None):
     except:
         return Response({'Message':'FALSE'})
 
-@api_view(['GET'])
+@api_view(['POST'])
 def nssOverTime(request,format=None):
     try:
-        if request.method == 'GET':     
+        if request.method == 'POST':     
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -715,7 +747,10 @@ def nssOverTime(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -773,10 +808,10 @@ def nssOverTime(request,format=None):
     except:
         return Response({'Message':'FALSE'})
     
-@api_view(['GET'])
+@api_view(['POST'])
 def npsVsSentiments(request,format=None):
     try:
-        if request.method == 'GET':
+        if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -784,7 +819,10 @@ def npsVsSentiments(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -910,10 +948,10 @@ def npsVsSentiments(request,format=None):
         return Response({'Message':'FALSE'})
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def providersData(request,format=None):
     try:
-        if request.method == 'GET':
+        if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -921,7 +959,10 @@ def providersData(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -953,10 +994,10 @@ def providersData(request,format=None):
     except:
         return Response({'Message':'FALSE'})
 
-@api_view(['GET'])
+@api_view(['POST'])
 def clinicData(request,format=None):
     # try:
-        if request.method == 'GET':
+        if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -964,7 +1005,10 @@ def clinicData(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -994,10 +1038,10 @@ def clinicData(request,format=None):
     # except:
     #     return Response({'Message':'FALSE'})
 
-@api_view(['GET'])
+@api_view(['POST'])
 def clientData(request,format=None):
     # try:
-        if request.method == 'GET':
+        if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
             end_year = request.GET.get('end_year')
@@ -1005,7 +1049,10 @@ def clientData(request,format=None):
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
-            clinic = re.split(r"-|,", clinic)  
+            clinic = re.split(r"-|,", clinic)
+            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+            if(check_token.TOKEN != (request.headers)['Authorization']):
+                return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -1203,4 +1250,6 @@ def egMemberPercentile(request,format=None):
         
     except:
         return Response({'Message':"FALSE"})
+
+
 
