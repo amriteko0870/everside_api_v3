@@ -332,3 +332,28 @@ def prob_func(df):
 # def index(request):
 #     #everside_nps.objects.filter(WHATDIDWELLWITHAPP__length__lte = 2).update(WHATDIDWELLWITHAPP = 'nan')
 #     return HttpResponse('hello')
+
+#---------------------------------------------------
+
+
+# def index(request):
+#     FIRST_NAME = 'Tabitha'
+#     LAST_NAME = 'Rizzio'
+#     USERNAME = 'tabithaeko'
+#     EMAIL = 'tabitha.rizzio@eversidehealth.com'
+#     PASS = '12345678'
+#     USER_TYPE = '0'
+    
+#     PASSWORD = make_password(PASS)
+#     TOKEN = make_password(USERNAME+PASS)
+#     data = user_data(
+#                     FIRST_NAME = FIRST_NAME,
+#                     LAST_NAME = LAST_NAME,
+#                     USERNAME = USERNAME,
+#                     EMAIL = EMAIL,
+#                     USER_TYPE = USER_TYPE,
+#                     PASSWORD = PASSWORD,
+#                     TOKEN    = TOKEN,
+#     )
+#     data.save()   
+#     return HttpResponse('Hello')

@@ -1181,19 +1181,13 @@ def clientData(request,format=None):
         return Response({'Message':'FALSE'})
 
 
-def index(request):
-    df = pd.read_csv('Clients_Clinics_20220427.csv')
-    # for i in range((df.shape)[0]):
-    #     everside_nps.objects.filter(CLINIC_STATE=list(df['State'])[i]).update(REGION=list(df['Region'])[i])
-        
-    return HttpResponse('Hello')
 #--------------------------------Enagement Moddel------------------------------------------------------
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser,FormParser])
 def egMemberPercentile(request,format=None):
         
-    # try:
+    try:
         print(((request.data)['username']))
         try:
             file_name = str((request.data)['username'])+'.csv'
@@ -1402,8 +1396,8 @@ def egMemberPercentile(request,format=None):
                          'lat_mid':sum(lat)/len(lat),
                          'long_mid':sum(long)/len(long)})
         
-    # except:
-    #     return Response({'Message':"FALSE",'Error':'final except'})
+    except:
+        return Response({'Message':"FALSE",'Error':'final except'})
 
 
 
