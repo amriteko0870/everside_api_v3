@@ -1,0 +1,261 @@
+MEMBER_ID,HOUSEHOLD_ID,MEMBER_INDICATOR,CLIENT_ID,STATE,REGION,ZIP,GENDER,AGE,Elig_SDT,MONSIN_ELIGSTART,MONTHS_ELIG_TO_FIRSTENG,CLIENT_ENROLL_CONTRACT_TYP,CLIENT_UNION_IND,CLIENT_NAICS2,CLIENT_DEF_HC_TYPE,Legacy_Co,Union_Status,Industry
+40,0011U00000rgn1zQAA,Other,0011U00000rhpMXQAY,NJ,Northeast,4240,Male,21,43831,11,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+41,0011U00000rhccyQAA,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,58,42892,42,,Opt In,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+42,0011U00000rhkmOQAQ,Primary,0011U00000rhpMXQAY,MA,Northeast,1077,Male,69,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+43,0014w00003GEcfDAAT,Child,0013g000006NvU7AAK,NJ,Northeast,7001,Male,23,41101,101,,Flat Fee,Non-Union,Educational Services,On Site,Activate,Non-Union,Educational Services
+44,0011U00000rhiLsQAI,Primary,0011U00000rhpMXQAY,NJ,Northeast,6067,Male,79,42892,42,,Opt In,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+45,0014w000031pwlbAAA,Child,0013g000006NvUHAA0,NJ,Northeast,1420,Male,53,43129,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+46,0011U00000rh0MjQAI,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,34,42924,41,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+47,0011U00000rgmgpQAA,Primary,0011U00000rhpP2QAI,NJ,Northeast,4612,Male,53,42309,61,15.0,Flat Fee,Non-Union,Health Care and Social Assistance,Near Site,Paladina,Non-Union,Health Care and Social Assistance
+48,0014w000031pwiLAAQ,Child,0013g000006NvUHAA0,MA,Northeast,7001,Male,54,41345,93,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+49,0011U00000rhPrcQAE,Other,0011U00000rhpMXQAY,NJ,Northeast,4412,Male,18,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+50,0011U00000rh9XaQAI,Primary,0011U00000rhpMXQAY,NJ,Northeast,2739,Male,62,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+51,0011U00000rhIP9QAM,Primary,0011U00000rhpMXQAY,ME,Northeast,7001,Male,45,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+52,0014w000031pwljAAA,Child,0013g000006NvUHAA0,ME,Northeast,3087,Male,68,42254,63,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+53,0011U00000rh2fAQAQ,Primary,0011U00000rhpMXQAY,NH,Northeast,2893,Male,56,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+54,0014w000031pJZtAAM,Child,0013g000006NvUHAA0,MA,Northeast,7001,Female,29,43101,35,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+55,0011U00000rh5JaQAI,Spouse,0011U00000rhpMXQAY,NJ,Northeast,6902,Male,72,43466,23,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+56,0011U00000rgtN2QAI,Other,0011U00000rhpMXQAY,ME,Northeast,7001,Female,20,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+57,0011U00000rhGOsQAM,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,29,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+58,0011U00000rhHOaQAM,Child,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,31,43040,37,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+59,0011U00000rgxIsQAI,Spouse,0011U00000rhpMXQAY,NJ,Northeast,6107,Female,50,43101,35,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+60,0014w000031pJIuAAM,Spouse,0013g000006NvUHAA0,MA,Northeast,2120,Female,67,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+61,0014w000031pLACAA2,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Female,72,43831,11,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+62,0011U00000rhSxiQAE,Child,0011U00000rhpMXQAY,MA,Northeast,1420,Female,23,43678,16,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+63,0011U00000rgq72QAA,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,69,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+64,0011U00000rhBnfQAE,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,27,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+65,0014w000031pJHOAA2,Spouse,0013g000006NvUHAA0,NH,Northeast,7001,Female,54,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+66,0011U00000rh9bYQAQ,Other,0011U00000rhpMXQAY,CT,Northeast,7001,Female,76,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+67,0014w000031pJGjAAM,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Male,62,44028,5,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+68,0011U00000rhJxLQAU,Primary,0011U00000rhpMXQAY,NJ,Northeast,4038,Female,70,42892,42,,Opt In,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+69,0014w000031pwdgAAA,Child,0013g000006NvUHAA0,IN,Northeast,7001,Female,52,43893,9,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+70,0011U00000rh4K7QAI,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,60,43466,23,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+71,0014w00002pQAlFAAW,Primary,0013g000006NvUHAA0,NJ,Northeast,1420,Female,59,42662,50,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+72,0011U00000rhVUKQA2,Other,0011U00000rhpMXQAY,CT,Northeast,6107,Female,29,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+73,0011U00000rgvnSQAQ,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,67,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+74,0014w000031qxynAAA,Primary,0013g000006NvUjAAK,VT,Northeast,7001,Female,75,43279,30,7.0,Flat Fee,Non-Union,Information,On Site,Activate,Non-Union,Information
+75,0011U00000rgpJcQAI,Primary,0011U00000rhpMXQAY,NJ,Northeast,6790,Female,56,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+76,,Primary,0011U00000rhpNkQAI,NJ,Northeast,7001,Female,59,44166,0,,All-In-Eligible,Non-Union,Educational Services,Near Site,Paladina,Non-Union,Educational Services
+77,0011U00000rhjptQAA,Primary,0011U00000rhpMXQAY,MA,Northeast,7001,Female,72,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+78,0014w000031pJTGAA2,Spouse,0013g000006NvUHAA0,NJ,Northeast,7001,Male,68,43466,23,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+79,0011U00000rgsBdQAI,Other,0011U00000rhpMXQAY,MA,Northeast,4038,Male,33,43709,15,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+80,0011U00000rhGmwQAE,Primary,0011U00000rhpMXQAY,CT,Northeast,1453,Female,67,43282,29,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+81,0014w000031pLYYAA2,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Male,44,43738,15,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+82,0011U00000rgxO5QAI,Primary,0011U00000rhpMXQAY,NJ,Northeast,4653,Female,81,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+83,0014w000031pLgGAAU,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Female,41,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+84,0014w000031pJMYAA2,Primary,0013g000006NvUHAA0,CT,Northeast,7001,Male,62,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+85,0014w00002pQAwvAAG,Primary,0013g000006NvUHAA0,CT,Northeast,7001,Male,45,42712,48,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+86,0011U00000rgsBdQAI,Other,0011U00000rhpMXQAY,NJ,Northeast,1440,Female,58,43800,12,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+87,0014w000031pLPEAA2,Primary,0013g000006NvUHAA0,NJ,Northeast,3062,Female,54,43259,30,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+88,0014w00003GEnR6AAL,Child,0013g000006NvTbAAK,NJ,Northeast,4612,Female,32,40900,108,,Flat Fee,Non-Union,Educational Services,Near Site,Activate,Non-Union,Educational Services
+89,0011U00001ApJGxQAN,Primary,0011U00000rhpMXQAY,NJ,Northeast,4106,Female,69,43831,11,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+90,0014w00002pQAI9AAO,Primary,0013g000006NvUHAA0,CT,Northeast,7001,Female,76,42662,50,5.0,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+91,0011U00000rhMQfQAM,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,25,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+92,0014w00002pQ9dDAAS,Primary,0013g000006NvUHAA0,NJ,Northeast,6360,Male,44,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+93,0014w000031pJRhAAM,Spouse,0013g000006NvUHAA0,NJ,Northeast,7001,Male,74,43101,35,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+94,0011U00000rhIb0QAE,Primary,0011U00000rhpMXQAY,MA,Northeast,7001,Female,68,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+95,0013g000003oqR7AAI,Spouse,0011U00000rhpLKQAY,NJ,Northeast,1420,Female,61,43862,10,,Flat Fee,Non-Union,Health Care and Social Assistance,Near Site,Everside,Non-Union,Health Care and Social Assistance
+96,0011U00000rh2cUQAQ,Other,0011U00000rhpMXQAY,CT,Northeast,1420,Female,40,42948,40,,Opt In,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+97,0011U00000rhHuBQAU,Other,0011U00000rhpMXQAY,MA,Northeast,7001,Female,62,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+98,0014w00002pQ9gOAAS,Primary,0013g000006NvUHAA0,MA,Northeast,7001,Female,68,42716,48,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+99,0014w000031pLG0AAM,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Male,46,43831,11,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+100,0014w000031pwUuAAI,Child,0013g000006NvUHAA0,ME,Northeast,1420,Female,68,42605,52,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+101,0013g00000B3yBNAAZ,Spouse,0011U00000rhpLKQAY,NJ,Northeast,6880,Male,81,44136,1,,Flat Fee,Non-Union,Health Care and Social Assistance,Near Site,Everside,Non-Union,Health Care and Social Assistance
+102,0011U00000rgteoQAA,Primary,0011U00000rhpMXQAY,MA,Northeast,6517,Male,40,43477,23,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+103,0014w000031pLXwAAM,Primary,0013g000006NvUHAA0,MA,Midwest,7001,Female,44,43831,11,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+104,0014w000031pJHOAA2,Child,0013g000006NvUHAA0,MA,Northeast,6850,Male,11,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+105,0011U0000124je4QAA,Primary,0011U00000rhpMXQAY,MA,Northeast,1420,Female,58,43739,14,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+106,0011U00000rgqqeQAA,Primary,0011U00000rhpMXQAY,RI,Northeast,1420,Male,67,43831,11,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+107,0014w000031pwo2AAA,Child,0013g000006NvUHAA0,NJ,Northeast,1830,Female,73,41526,87,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+108,0011U00000rhHSPQA2,Other,0011U00000rhpMXQAY,NJ,Northeast,1453,Female,39,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+109,0014w000031pweaAAA,Child,0013g000006NvUHAA0,NJ,Northeast,7001,Female,39,44180,0,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+110,0011U00000rh0KDQAY,Spouse,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,67,43435,24,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+111,0011U00000rgzJJQAY,Other,0011U00000rhpMXQAY,NJ,Northeast,1845,Male,32,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+112,0011U00000rgs7lQAA,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,35,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+113,0014w000031pLb1AAE,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Female,37,43678,16,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+114,0014w000031pJCXAA2,Primary,0013g000006NvUHAA0,MA,Northeast,7001,Female,74,43567,20,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+115,0011U00000rhGMoQAM,Primary,0011U00000rhpMXQAY,NJ,Northeast,2067,Female,73,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+116,0011U00000rgsMFQAY,Primary,0011U00000rhpMXQAY,ME,Northeast,7001,Female,69,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+117,0014w00002pQAndAAG,Child,0013g000006NvUHAA0,NJ,Northeast,1510,Male,24,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+118,0014w00002pQ9TWAA0,Primary,0013g000006NvUHAA0,NJ,Northeast,6107,Female,72,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+119,0011U00000rgmLcQAI,Primary,0011U00000rhpMXQAY,MA,Northeast,1440,Male,45,43040,37,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+120,0014w000031pJGjAAM,Child,0013g000006NvUHAA0,MA,Northeast,7001,Female,39,44028,5,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+121,0011U00000rhCVbQAM,Primary,0011U00000rhpMXQAY,NJ,Northeast,1453,Female,46,43162,33,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+122,0011U00000rh4smQAA,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,67,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+123,0011U00000rhRh9QAE,Spouse,0011U00000rhpMXQAY,NJ,Northeast,4401,Female,51,43605,19,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+124,0011U00000rgis2QAA,Child,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,7,43586,19,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+125,0014w000031qgvnAAA,Spouse,0013g000006NvUnAAK,NJ,Northeast,7001,Female,69,42977,40,3.0,Flat Fee,Union,Other Services (except Public Administration),Near Site,Activate,Union,Other Services (except Public Administration)
+126,0011U00000rhgChQAI,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,57,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+127,0011U00000rh2cUQAQ,Other,0011U00000rhpMXQAY,NH,Northeast,7001,Female,30,42948,40,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+128,0014w000031pJZtAAM,Spouse,0013g000006NvUHAA0,ME,Northeast,7001,Female,60,43101,35,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+129,0011U00000rh5UnQAI,Child,0011U00000rhpMXQAY,MA,Northeast,7001,Female,8,43374,26,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+130,0011U00001ApJ4YQAV,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,48,43831,11,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+131,0011U00000rh6V6QAI,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,64,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+132,0013g00000B30GCAAZ,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,78,44131,2,0.0,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+133,0011U00000rgzYnQAI,Spouse,0011U00000rhpMXQAY,MA,Northeast,7001,Female,76,43466,23,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+134,0011U00000rhgChQAI,Other,0011U00000rhpMXQAY,NJ,Northeast,2889,Female,29,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+135,0011U00000rhHOaQAM,Child,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,38,43040,37,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+136,0011U00000rh97sQAA,Spouse,0011U00000rhpMXQAY,NJ,Northeast,1453,Female,38,43070,36,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+137,0014w000031pJRhAAM,Child,0013g000006NvUHAA0,NJ,Northeast,1453,Male,25,43101,35,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+138,0014w000031pLKoAAM,Spouse,0013g000006NvUHAA0,NJ,Northeast,7001,Female,54,43952,7,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+139,0014w000031pJRhAAM,Child,0013g000006NvUHAA0,MA,Northeast,2067,Female,26,43101,35,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+140,0011U00000rh9ZyQAI,Other,0011U00000rhpMXQAY,NJ,Northeast,6331,Male,50,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+141,0011U00000rgq0DQAQ,Primary,0011U00000rhpMXQAY,NJ,Northeast,1420,Female,56,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+142,0014w000031pJRhAAM,Child,0013g000006NvUHAA0,ME,Northeast,2067,Female,37,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+143,0011U00000rhHuBQAU,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,24,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+144,0011U00000rhn2fQAA,Other,0011U00000rhpMXQAY,MA,Northeast,1830,Female,57,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+145,0014w00002pQ9e4AAC,Primary,0013g000006NvUHAA0,CT,Northeast,7001,Female,48,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+146,0011U00000rh4B0QAI,Primary,0011U00000rhpMXQAY,MA,Northeast,7001,Male,67,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+147,0014w000031pwO7AAI,Child,0013g000006NvUHAA0,MA,Northeast,7001,Female,48,44158,1,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+148,0014w000031pJChAAM,Child,0013g000006NvUHAA0,MA,Northeast,2644,Male,27,43586,19,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+149,0013g0000091hJwAAI,Spouse,0011U00000rhpLKQAY,MA,Northeast,6786,Female,70,44075,3,,Flat Fee,Non-Union,Health Care and Social Assistance,Near Site,Everside,Non-Union,Health Care and Social Assistance
+150,0014w00003GEWoVAAX,Primary,0013g000006NvSaAAK,CT,Northeast,1606,Male,54,42647,50,,All-In-Eligible,Non-Union,Manufacturing,Near Site,Activate,Non-Union,Manufacturing
+151,0011U00000rhEEiQAM,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,50,43466,23,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+152,0014w000031pJYVAA2,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Female,48,43101,35,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+153,0011U00000rhBnfQAE,Primary,0011U00000rhpMXQAY,NJ,Northeast,1453,Female,60,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+154,0011U00000rhNCfQAM,Other,0011U00000rhpMXQAY,MA,Northeast,2644,Male,22,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+155,0014w000031pwjDAAQ,Child,0013g000006NvUHAA0,MA,Northeast,2779,Male,66,40483,121,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+156,0014w000031pwc6AAA,Child,0013g000006NvUHAA0,ME,Northeast,7001,Female,52,38887,174,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+157,0011U00000rhEVnQAM,Other,0011U00000rhpMXQAY,MA,Northeast,6331,Female,38,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+158,0014w000031pLf4AAE,Primary,0013g000006NvUHAA0,CT,Northeast,7001,Female,59,43181,33,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+159,0011U00000rh9AcQAI,Primary,0011U00000rhpMXQAY,MA,Northeast,2920,Male,70,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+160,0011U00000rhIo3QAE,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,68,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+161,0013g000003oqR7AAI,Child,0011U00000rhpLKQAY,NJ,Northeast,7001,Male,23,43862,10,,Flat Fee,Non-Union,Health Care and Social Assistance,Near Site,Everside,Non-Union,Health Care and Social Assistance
+162,0014w00002pQCGaAAO,Primary,0013g000006NvUHAA0,VT,Northeast,7001,Female,66,42662,50,39.0,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+163,0014w000031pwpZAAQ,Child,0013g000006NvUHAA0,MA,Northeast,7001,Male,68,37823,209,,Opt In,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+164,0014w000031pJRhAAM,Child,0013g000006NvUHAA0,NJ,Northeast,1420,Female,34,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+165,0011U00000rhKXHQA2,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,56,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+166,0011U00000rhnmoQAA,Other,0011U00000rhpMXQAY,NJ,Northeast,6067,Female,16,43709,15,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+167,0014w000031pwWXAAY,Child,0013g000006NvUHAA0,NJ,Northeast,7001,Female,68,41505,88,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+168,0011U00000rhVJUQA2,Spouse,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,63,43680,16,,Opt In,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+169,0011U00000rhGOsQAM,Primary,0011U00000rhpMXQAY,MA,Northeast,7001,Female,49,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+170,0011U00000rhDHAQA2,Spouse,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,71,43092,36,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+171,0014w00003GEjmLAAT,Primary,0011U000017FGjcQAG,NJ,Northeast,6108,Female,62,43455,24,,Flat Fee,Non-Union,Retail Trade,Near Site,Activate,Non-Union,Retail Trade
+172,0014w000031pJa1AAE,Spouse,0013g000006NvUHAA0,NJ,Northeast,7001,Male,70,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+173,0014w000031qgvnAAA,Primary,0013g000006NvUnAAK,NJ,Northeast,7001,Male,67,42178,66,21.0,Flat Fee,Union,Other Services (except Public Administration),Near Site,Activate,Union,Other Services (except Public Administration)
+174,0011U00000rhgYVQAY,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,54,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+175,0011U00000rhi64QAA,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,86,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+176,0011U00000rhHC6QAM,Other,0011U00000rhpMXQAY,MA,Northeast,7001,Female,50,42924,41,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+177,0011U00000rhMq4QAE,Other,0011U00000rhpMXQAY,ME,Northeast,7001,Female,29,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+178,0011U00000rh9ZyQAI,Other,0011U00000rhpMXQAY,MA,Northeast,7001,Female,33,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+179,0011U00000rgxYEQAY,Primary,0011U00000rhpMXQAY,NJ,Northeast,6340,Female,64,42910,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+180,0011U00000rhTcJQAU,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,57,43831,11,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+181,0014w000031pJPQAA2,Spouse,0013g000006NvUHAA0,CT,Northeast,1420,Female,79,43101,35,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+182,0011U00000rghosQAA,Primary,0011U00000rhpP2QAI,MA,Northeast,1420,Male,68,41148,100,,Opt In,Non-Union,Health Care and Social Assistance,Near Site,Paladina,Non-Union,Health Care and Social Assistance
+183,0011U00000rhAE9QAM,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,80,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+184,0011U00000rhI9dQAE,Primary,0011U00000rhpMXQAY,NJ,Northeast,1420,Male,60,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+185,0014w000031pJChAAM,Child,0013g000006NvUHAA0,NJ,Northeast,7001,Female,25,43586,19,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+186,0011U00000rh099QAA,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,62,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+187,0014w00002pQCgxAAG,Primary,0013g000006NvUHAA0,ME,Northeast,2816,Female,70,42662,50,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+188,0011U00000rhHOaQAM,Primary,0011U00000rhpMXQAY,NJ,Northeast,2067,Female,61,43040,37,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+189,0011U00000rgvlyQAA,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,63,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+190,0014w00003GEkq7AAD,Primary,0013g000006NvTSAA0,MA,Northeast,7001,Male,44,42177,66,,All-In-Eligible,Non-Union,Manufacturing,On Site,Activate,Non-Union,Manufacturing
+191,0011U00000rgpLpQAI,Primary,0011U00000rhpMXQAY,NH,Northeast,1420,Female,76,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+192,0011U00000rghosQAA,Spouse,0011U00000rhpP2QAI,MA,Northeast,3104,Male,80,41148,100,,All-In-Eligible,Non-Union,Health Care and Social Assistance,Near Site,Paladina,Non-Union,Health Care and Social Assistance
+193,0011U00000rhllkQAA,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,28,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+194,0011U00000rhU2yQAE,Primary,0011U00000rhpMXQAY,MA,Midwest,7001,Female,88,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+195,0011U00000rhIlmQAE,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,53,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+196,0011U00000rh12PQAQ,Primary,0011U00000rhpMXQAY,NJ,Northeast,6067,Female,75,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+197,0014w000031pwjRAAQ,Child,0013g000006NvUHAA0,NJ,Northeast,7001,Female,41,43881,10,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+198,0014w00002pQ9V3AAK,Primary,0013g000006NvUHAA0,NJ,Northeast,1420,Female,67,42662,50,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+199,0014w000031pJHOAA2,Child,0013g000006NvUHAA0,NJ,Northeast,6067,Female,13,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+200,0011U00000rhjWWQAY,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,58,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+201,0011U00000rhkRMQAY,Primary,0011U00000rhpMXQAY,MA,Northeast,1845,Female,69,43282,29,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+202,0014w00003GElPlAAL,Primary,0013g000006NvTSAA0,MA,Northeast,7001,Female,53,42647,50,,All-In-Eligible,Non-Union,Manufacturing,On Site,Activate,Non-Union,Manufacturing
+203,0014w00002pQ9cWAAS,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Male,57,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+204,0014w000031pwY5AAI,Child,0013g000006NvUHAA0,NJ,Northeast,1106,Female,50,43978,7,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+205,0014w000031pLBcAAM,Spouse,0013g000006NvUHAA0,MA,Northeast,4263,Female,72,43101,35,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+206,0011U00000rh1cKQAQ,Child,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,38,43040,37,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+207,0014w000031pLLIAA2,Primary,0013g000006NvUHAA0,CT,Northeast,7001,Female,68,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+208,0011U00000rhjNJQAY,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,67,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+209,0014w000031pJO7AAM,Child,0013g000006NvUHAA0,CT,Midwest,2644,Female,17,43374,26,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+210,0011U00000rhMQfQAM,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,18,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+211,0011U00000rgsijQAA,Other,0011U00000rhpMXQAY,ME,Northeast,6786,Male,47,42896,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+212,0011U00000rh0KDQAY,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,26,43435,24,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+213,0011U00000rhgChQAI,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,29,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+214,0011U00000rh6V6QAI,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,35,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+215,0011U00000rhG0qQAE,Other,0011U00000rhpMXQAY,MA,Northeast,7001,Female,16,42948,40,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+216,0011U00000rhnmoQAA,Other,0011U00000rhpMXQAY,CT,Northeast,7001,Female,43,43709,15,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+217,0011U00000rgnQAQAY,Primary,0011U00000rhpMXQAY,MA,Northeast,7001,Male,70,42917,41,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+218,0011U00000rgqYdQAI,Primary,0011U00000rhpMXQAY,NJ,Northeast,4653,Female,74,43647,17,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+219,0011U00000rhFfkQAE,Child,0011U00000rhpMXQAY,NJ,Northeast,1453,Female,22,43160,33,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+220,0013g000003otDuAAI,Primary,0011U00000rhpMXQAY,MA,Northeast,1420,Female,73,43862,10,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+221,0011U00000rhi5qQAA,Primary,0011U00000rhpMXQAY,CT,Northeast,7001,Female,69,43466,23,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+222,0011U00000rh3o7QAA,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,25,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+223,0014w00002pQ9SgAAK,Primary,0013g000006NvUHAA0,CT,Northeast,1453,Male,60,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+224,0014w000031pLRWAA2,Primary,0013g000006NvUHAA0,IN,Northeast,7001,Male,61,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+225,0011U00000rhNypQAE,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,55,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+226,0011U00000rgpJcQAI,Child,0011U00000rhpMXQAY,ME,Northeast,7001,Female,27,43040,37,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+227,0014w000031pwcBAAQ,Child,0013g000006NvUHAA0,NJ,Northeast,7001,Female,66,44180,0,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+228,0011U00000rhG4ZQAU,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,67,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+229,0011U00000rgqAXQAY,Child,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,29,43101,35,,Opt In,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+230,0014w00002pQ9ccAAC,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Female,72,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+231,0011U00000rhBnfQAE,Other,0011U00000rhpMXQAY,CT,Northeast,7001,Female,33,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+232,0014w000031pwRBAAY,Child,0013g000006NvUHAA0,NJ,Northeast,7001,Female,56,43885,10,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+233,0011U00000rhSxiQAE,Primary,0011U00000rhpMXQAY,MA,Midwest,7001,Female,43,43678,16,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+234,0014w00002pQAndAAG,Primary,0013g000006NvUHAA0,MA,Northeast,6108,Female,58,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+235,0014w000031pwkvAAA,Child,0013g000006NvUHAA0,VT,Northeast,7001,Female,59,40882,108,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+236,0011U00000rhHcNQAU,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,64,42892,42,,Opt In,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+237,0014w000031pJIyAAM,Primary,0013g000006NvUHAA0,NJ,Northeast,5641,Female,55,43891,9,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+238,0014w000031pwU8AAI,Child,0013g000006NvUHAA0,NJ,Northeast,7001,Female,70,42198,65,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+239,0011U00001ApN4DQAV,Primary,0011U00000rhpMXQAY,MA,Northeast,2478,Female,39,43831,11,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+240,0011U00000rgmLcQAI,Child,0011U00000rhpMXQAY,NJ,Northeast,6107,Female,12,43586,19,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+241,0014w000031pLEDAA2,Primary,0013g000006NvUHAA0,NH,Northeast,7001,Male,72,43466,23,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+242,0011U00000rgoFdQAI,Child,0011U00000rhpMXQAY,NJ,Northeast,1440,Male,36,43556,20,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+243,0014w000031pJGjAAM,Child,0013g000006NvUHAA0,NH,Northeast,1606,Female,41,44028,5,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+244,0011U00000rhGOsQAM,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,27,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+245,0011U00000rglDnQAI,Other,0011U00000rhpMXQAY,MA,Northeast,7001,Female,29,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+246,0011U00000rh51YQAQ,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,54,42892,42,,Opt In,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+247,0011U00000rhLjqQAE,Other,0011U00000rhpMXQAY,NH,Northeast,1420,Male,19,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+248,0011U00000rgn1zQAA,Other,0011U00000rhpMXQAY,NJ,Northeast,4102,Female,46,43831,11,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+249,0011U00000rh3inQAA,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,50,43040,37,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+250,0014w000031pwUzAAI,Child,0013g000006NvUHAA0,NJ,Northeast,7001,Female,50,44186,0,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+251,0014w000031pwh4AAA,Child,0013g000006NvUHAA0,MA,Northeast,4258,Male,52,39218,163,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+252,0014w000031pJIyAAM,Child,0013g000006NvUHAA0,NJ,Northeast,7001,Female,34,43891,9,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+253,0011U00000rh11qQAA,Child,0011U00000rhpMXQAY,MA,Northeast,1420,Male,14,43525,21,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+254,0014w000031pJJoAAM,Primary,0013g000006NvUHAA0,MA,Northeast,7001,Female,43,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+255,0014w000031pwhjAAA,Child,0013g000006NvUHAA0,MA,Northeast,1420,Male,76,43325,28,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+256,0014w000031pJZtAAM,Child,0013g000006NvUHAA0,RI,Midwest,7001,Female,34,43101,35,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+257,0011U000014s5ppQAA,Primary,0011U00000rhpP2QAI,NJ,Northeast,7001,Female,65,43770,13,,All-In-Eligible,Non-Union,Health Care and Social Assistance,Near Site,Paladina,Non-Union,Health Care and Social Assistance
+258,0011U00000rhNCfQAM,Other,0011U00000rhpMXQAY,NJ,Northeast,4038,Male,22,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+259,0011U00000rgpi5QAA,Spouse,0011U00000rhpMXQAY,RI,Northeast,7001,Female,52,43101,35,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+260,0011U00001ApJGxQAN,Child,0011U00000rhpMXQAY,NJ,Northeast,1420,Female,20,43831,11,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+261,0014w00002pQCgRAAW,Primary,0013g000006NvUHAA0,NJ,Northeast,6786,Female,59,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+262,0014w000031pJGjAAM,Child,0013g000006NvUHAA0,MA,Northeast,7001,Female,19,44028,5,,Opt In,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+263,0014w000031pwpWAAQ,Child,0013g000006NvUHAA0,NH,Northeast,2301,Male,49,43255,30,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+264,0011U00000rh4lbQAA,Other,0011U00000rhpMXQAY,ME,Northeast,7001,Female,38,42948,40,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+265,0014w00002pQCh7AAG,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Female,68,42662,50,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+266,0011U00000rh2cUQAQ,Primary,0011U00000rhpMXQAY,NJ,Northeast,1420,Female,46,42948,40,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+267,0011U00001ApK2UQAV,Child,0011U00000rhpMXQAY,CT,Northeast,6704,Female,23,43831,11,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+268,0011U00000rhbC1QAI,Other,0011U00000rhpMXQAY,CT,Northeast,1420,Female,8,43647,17,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+269,0011U00000rhBZWQA2,Primary,0011U00000rhpMXQAY,NJ,Northeast,1462,Female,42,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+270,0011U00000rhLjqQAE,Primary,0011U00000rhpMXQAY,MA,Northeast,7001,Male,50,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+271,0014w00002pQ9SoAAK,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Male,48,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+272,0011U00000rhDaHQAU,Primary,0011U00000rhpMXQAY,NJ,Northeast,3275,Female,57,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+273,0014w000031pwYtAAI,Child,0013g000006NvUHAA0,NJ,Northeast,4401,Female,46,43605,19,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+274,0014w000031pwicAAA,Child,0013g000006NvUHAA0,NJ,Northeast,7001,Male,39,41484,89,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+275,0014w000031pJRuAAM,Child,0013g000006NvUHAA0,NJ,Northeast,2067,Female,17,43101,35,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+276,0014w000031pLKoAAM,Primary,0013g000006NvUHAA0,CT,Northeast,7001,Female,48,43952,7,,Opt In,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+277,0011U00000rgpgRQAQ,Primary,0011U00000rhpMXQAY,CT,Northeast,4038,Female,47,43588,19,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+278,0014w00003GEcfoAAD,Spouse,0013g000006NvU7AAK,MA,Northeast,7001,Female,39,41101,101,,All-In-Eligible,Non-Union,Educational Services,On Site,Activate,Non-Union,Educational Services
+279,0011U00000rhIlmQAE,Other,0011U00000rhpMXQAY,MA,Northeast,7001,Male,16,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+280,0014w00002pQCfQAAW,Primary,0013g000006NvUHAA0,NJ,Northeast,1420,Male,46,42662,50,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+281,0011U0000124lLGQAY,Primary,0011U00000rhpMXQAY,MA,Northeast,1462,Female,39,43739,14,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+282,0011U00000rh0KDQAY,Other,0011U00000rhpMXQAY,RI,Northeast,5445,Female,15,43435,24,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+283,0014w000031pLHRAA2,Primary,0013g000006NvUHAA0,MA,Northeast,7001,Female,54,44167,0,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+284,0011U00000rh3inQAA,Spouse,0011U00000rhpMXQAY,NJ,Northeast,7001,Female,27,43040,37,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+285,0013g00000CgHmIAAV,Other,0011U00000rhpNkQAI,NJ,Northeast,7001,Female,9,44166,0,,All-In-Eligible,Non-Union,Educational Services,Near Site,Paladina,Non-Union,Educational Services
+286,0011U00000rhFSXQA2,Primary,0011U00000rhpMXQAY,NJ,Northeast,2081,Male,55,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+287,0014w000031pLM2AAM,Primary,0013g000006NvUHAA0,NJ,Northeast,2864,Female,63,43831,11,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+288,0011U00000rhgYVQAY,Other,0011U00000rhpMXQAY,CT,Northeast,7001,Female,45,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+289,0011U00000rh1cKQAQ,Primary,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,55,43040,37,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+290,0011U00000rh7U4QAI,Other,0011U00000rhpMXQAY,NJ,Northeast,1821,Female,44,43831,11,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+291,0011U00000rh76PQAQ,Other,0011U00000rhpMXQAY,RI,Northeast,7001,Female,11,42948,40,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+292,0014w000031pJChAAM,Primary,0013g000006NvUHAA0,NJ,Northeast,7001,Female,48,43586,19,,All-In-Eligible,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+293,0014w000031pwa1AAA,Child,0013g000006NvUHAA0,IN,Northeast,7001,Female,37,40994,105,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+294,0011U00000rgkVxQAI,Primary,0011U00000rhpP7QAI,MA,Northeast,3110,Female,36,43009,38,,All-In-Eligible,Non-Union,Health Care and Social Assistance,On Site,Paladina,Non-Union,Health Care and Social Assistance
+295,0011U00000rh8YMQAY,Other,0011U00000rhpMXQAY,NJ,Northeast,7001,Male,61,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+296,0014w000031pLJyAAM,Primary,0013g000006NvUHAA0,CT,Northeast,2780,Female,34,43394,26,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade
+297,0011U00000rgyvrQAA,Other,0011U00000rhpMXQAY,MA,Midwest,4654,Female,42,42892,42,,Flat Fee,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+298,0011U00000rhFSXQA2,Other,0011U00000rhpMXQAY,MA,Northeast,7001,Female,20,42892,42,,All-In-Eligible,Non-Union,Local Government,Near Site,Paladina,Non-Union,Local Government
+299,0014w000031pJChAAM,Child,0013g000006NvUHAA0,MA,Northeast,6786,Female,20,43586,19,,Flat Fee,Non-Union,Wholesale Trade,On Site,Activate,Non-Union,Wholesale Trade

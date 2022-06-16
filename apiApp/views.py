@@ -6,6 +6,7 @@ from datetime import datetime as dt
 import datetime
 import re
 from operator import itemgetter 
+import os
 #-------------------------Django Modules---------------------------------------------
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -36,6 +37,9 @@ class roundRating(Func):
 class twoDecimal(Func):
     function = 'ROUND'
     template='%(function)s(%(expressions)s, 2)'
+class Round(Func):
+    function = 'ROUND'
+    template='%(function)s(%(expressions)s, 0)'
 #--------------------------- Filters---------------------------------------------------
 @api_view(['POST'])
 def filterRegion(request,format=None):
@@ -112,7 +116,7 @@ def userLogin(request,format=None):
 #---------------------For Dashboards--------------------------------------------------
 @api_view(['POST'])
 def netPromoterScore(request,format=None):
-    # try:
+    try:
         if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
@@ -120,12 +124,18 @@ def netPromoterScore(request,format=None):
             end_month = request.GET.get('end_month')
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
-            # print('header => ',(request.headers)['Authorization'])
-            # print('body => ',(request.data)['username'])
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
-                # return Response({'Message':'FALSE'})
-                pass
+            # print('###################################################################################')
+            # print((request.data)['username'],(request.headers)['Authorization'])
+            # print('###################################################################################')
+
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                print((request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})
+            except:
+                return Response({'Message':'FALSE'})
+
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)       
             start_date = str(start_month)+'-'+str(start_year)
@@ -201,8 +211,8 @@ def netPromoterScore(request,format=None):
             return Response({'Message':'TRUE',
                                 'nps':nps,
                                         'nps_pie':nps_pie})
-    # except:
-    #     return Response({'Message':'FALSE'})
+    except:
+        return Response({'Message':'FALSE'})
 
 
 @api_view(['POST'])
@@ -217,9 +227,12 @@ def netSentimentScore(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
-                return Response({'Message':'FALSE'})  
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})  
+            except:
+                return Response({'Message':'FALSE'})
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -312,9 +325,12 @@ def totalCards(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
-                return Response({'Message':'FALSE'})  
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})    
+            except:
+                return Response({'Message':'FALSE'})
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -366,9 +382,12 @@ def totalComments(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
-                return Response({'Message':'FALSE'})  
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})    
+            except:
+                return Response({'Message':'FALSE'})
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
             if int(end_month)<12:
@@ -418,8 +437,11 @@ def positiveComments(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})    
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -471,8 +493,11 @@ def negativeComments(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})    
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -523,8 +548,11 @@ def neutralComments(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})    
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -575,8 +603,11 @@ def extremeComments(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})    
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -627,8 +658,11 @@ def alertComments(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})    
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -680,8 +714,11 @@ def npsOverTime(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})    
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -701,6 +738,22 @@ def npsOverTime(request,format=None):
                 nps = nps.filter(NPSCLINIC__in = clinic)
             
             nps = nps.values('SURVEY_MONTH' ).annotate(
+                                                    count = Count(F('REVIEW_ID')),
+                                                    # promoter = twoDecimal((Cast(Sum(Case(
+                                                    #             When(nps_label='Promoter',then=1),
+                                                    #             default=0,
+                                                    #             output_field=IntegerField()
+                                                    #             )),FloatField())/F('count'))*100),\
+                                                    # passive =  twoDecimal((Cast(Sum(Case(
+                                                    #             When(nps_label='Passive',then=1),
+                                                    #             default=0,
+                                                    #             output_field=IntegerField()
+                                                    #             )),FloatField())/F('count'))*100),\
+                                                    # detractor = twoDecimal((Cast(Sum(Case(
+                                                    #             When(nps_label='Detractor',then=1),
+                                                    #             default=0,
+                                                    #             output_field=IntegerField()
+                                                    #             )),FloatField())/F('count'))*100),\
                                                     promoter = twoDecimal((Cast(Sum(Case(
                                                                 When(nps_label='Promoter',then=1),
                                                                 default=0,
@@ -718,8 +771,9 @@ def npsOverTime(request,format=None):
                                                                 )),FloatField()))),\
                                                     month = Substr(F('SURVEY_MONTH'),1,3),\
                                                     year = Cast(F('SURVEY_YEAR'),IntegerField()),
-                                                    nps_abs = twoDecimal(F('promoter')-F('detractor')),
-                                                    nps = Case(
+                                                    nps_abs = twoDecimal(
+                                                        ((F('promoter')-F('detractor'))/(F('promoter')+F('passive')+F('detractor')))*100),
+                                                    NPS = Case(
                                                             When(
                                                                 nps_abs__lt = 0,
                                                                 then = 0    
@@ -748,8 +802,11 @@ def nssOverTime(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})    
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -820,8 +877,11 @@ def npsVsSentiments(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})    
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -960,8 +1020,11 @@ def providersData(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})  
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -984,12 +1047,22 @@ def providersData(request,format=None):
             providers = providers.exclude(PROVIDER_NAME__in = ['nan']).annotate(provider_name = F('PROVIDER_NAME'))\
                                             .values('provider_name')\
                                             .annotate(
+                                                    count = Count(F('REVIEW_ID')),
+                                                    promoter = Sum(Case(
+                                                        When(nps_label='Promoter',then=1),
+                                                        default=0,
+                                                        output_field=IntegerField()
+                                                        )),
+                                                    detractor = Sum(Case(
+                                                        When(nps_label='Detractor',then=1),
+                                                        default=0,
+                                                        output_field=IntegerField()
+                                                        )),
+                                                    average_nps=Cast(Round((Cast((F('promoter')-F('detractor')),FloatField())/F('count'))*100),IntegerField()),
                                                     provider_type = F('PROVIDERTYPE'),
                                                     provider_category = F('PROVIDER_CATEGORY'),
-                                                    average_nps=twoDecimal(Avg('NPS')),
-                                                    rating = roundRating(Avg('NPS')/2),
             ).order_by('provider_name')
-            providers = sorted(list(providers), key=itemgetter('average_nps'),reverse=True) 
+            # providers = sorted(list(providers), key=itemgetter('average_nps'),reverse=True) 
         return Response({'Message':'True','data':providers})
     except:
         return Response({'Message':'FALSE'})
@@ -1006,8 +1079,11 @@ def clinicData(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})  
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -1025,22 +1101,32 @@ def clinicData(request,format=None):
             clinic_data = clinic_data.annotate(clinic=F('NPSCLINIC'))\
                                  .values('clinic')\
                                  .annotate(
-                                        average_nps=twoDecimal(Avg('NPS')),
-                                        rating = roundRating(Avg('NPS')/2),
+                                        count = Count(F('REVIEW_ID')),
+                                        promoter = Sum(Case(
+                                            When(nps_label='Promoter',then=1),
+                                            default=0,
+                                            output_field=IntegerField()
+                                            )),
+                                        detractor = Sum(Case(
+                                            When(nps_label='Detractor',then=1),
+                                            default=0,
+                                            output_field=IntegerField()
+                                            )),
+                                        average_nps=Cast(Round((Cast((F('promoter')-F('detractor')),FloatField())/F('count'))*100),IntegerField()),
                                         city = F('CLINIC_CITY'),
                                         state = F('CLINIC_STATE'),
                                         address = Concat('CLINIC_CITY', V(', '), 'CLINIC_STATE'),
                                         region = F('REGION')
                                           )\
                                  .order_by('clinic')
-            clinic = sorted(list(clinic_data), key=itemgetter('average_nps'),reverse=True)
-        return Response({'Message':'True','data':clinic})
+            # clinic_data = sorted(list(clinic_data), key=itemgetter('average_nps'),reverse=True)
+        return Response({'Message':'True','data':clinic_data})
     # except:
     #     return Response({'Message':'FALSE'})
 
 @api_view(['POST'])
 def clientData(request,format=None):
-    # try:
+    try:
         if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
@@ -1050,8 +1136,11 @@ def clientData(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
-            check_token = user_data.objects.get(USERNAME = (request.data)['username'])
-            if(check_token.TOKEN != (request.headers)['Authorization']):
+            try:
+                check_token = user_data.objects.get(USERNAME = (request.data)['username'])
+                if(check_token.TOKEN != (request.headers)['Authorization']):
+                    return Response({'Message':'FALSE'})  
+            except:
                 return Response({'Message':'FALSE'})  
             start_date = str(start_month)+'-'+str(start_year)
             startDate = (time.mktime(datetime.datetime.strptime(start_date,"%m-%Y").timetuple())) - timestamp_start
@@ -1072,21 +1161,62 @@ def clientData(request,format=None):
                                  .values('client_name')\
                                  .annotate(
                                         parent_client_name = F('PARENT_CLIENT_NAME'),
-                                        average_nps=twoDecimal(Avg('NPS')),
-                                        rating = roundRating(Avg('NPS')/2),
+                                        count = Count(F('REVIEW_ID')),
+                                        promoter = Sum(Case(
+                                            When(nps_label='Promoter',then=1),
+                                            default=0,
+                                            output_field=IntegerField()
+                                            )),
+                                        detractor = Sum(Case(
+                                            When(nps_label='Detractor',then=1),
+                                            default=0,
+                                            output_field=IntegerField()
+                                            )),
+                                        average_nps=Cast(Round((Cast((F('promoter')-F('detractor')),FloatField())/F('count'))*100),IntegerField()),
                                           )\
                                  .order_by('client_name')
-            clients = sorted(list(clients), key=itemgetter('average_nps'),reverse=True)
+            # clients = sorted(list(clients), key=itemgetter('average_nps'),reverse=True)
         return Response({'Message':'True','data':clients,'parent_client_names':parent_client_names})
+    except:
+        return Response({'Message':'FALSE'})
 
+
+def index(request):
+    df = pd.read_csv('Clients_Clinics_20220427.csv')
+    # for i in range((df.shape)[0]):
+    #     everside_nps.objects.filter(CLINIC_STATE=list(df['State'])[i]).update(REGION=list(df['Region'])[i])
+        
+    return HttpResponse('Hello')
 #--------------------------------Enagement Moddel------------------------------------------------------
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser,FormParser])
 def egMemberPercentile(request,format=None):
-    try:
-        up_file = request.FILES.getlist('file')
-        df = pd.read_csv(up_file[0])
+        
+    # try:
+        print(((request.data)['username']))
+        try:
+            file_name = str((request.data)['username'])+'.csv'
+            name = 'uploads/engagement_files/'+file_name
+        except:
+            return Response({'Message':'FALSE','Error':'except'})
+        file_list = os.listdir('uploads\engagement_files')
+        print(file_list,file_name)
+        if file_name in file_list:
+            print('yes')
+            print('############################################')
+            try:
+                up_file = request.FILES.getlist('file')
+                df = pd.read_csv(up_file[0])
+                df.to_csv(name,index = False)
+            except:
+                df = pd.read_csv(name)
+        else:
+            up_file = request.FILES.getlist('file')
+            df = pd.read_csv(up_file[0])
+            ndf = df[['GENDER','AGE','CLIENT_ID','MEMBER_ID','CLIENT_ENROLL_CONTRACT_TYP']]
+            df.to_csv(name,index = False)
+        
         out = prob_func(df)
         out_prob = list(out['probability'])
         low = 0 # n < 0.5
@@ -1239,17 +1369,41 @@ def egMemberPercentile(request,format=None):
                         'color': '#d77a69'
                     }]
 
-
+        #---------------------------------Map-------------------------------------------------------
+        state_codes = region_names()
+        zip_df = pd.read_csv('zip_codes.csv')
+        ndf = df.drop_duplicates(subset='ZIP', keep="last")
+        lat_long_df = pd.merge(ndf,zip_df,how='left',on=['ZIP'])
+        state = list(lat_long_df['STATE'])
+        region = list(lat_long_df['REGION'])
+        long = list(lat_long_df['Y'])
+        lat = list(lat_long_df['X'])
+        zip = list(lat_long_df['ZIP'])
+        map_data = []
+        for i in range(lat_long_df.shape[0]):
+            frame = {
+                    'state':state_codes[state[i]],
+                    'region':region[i],
+                    'long':long[i],
+                    'lat':lat[i],
+                    'zip':zip[i],
+                    'zip_count':(list(df['ZIP'])).count(zip[i])
+            }
+            map_data.append(frame)
+        print(len(map_data))
         return Response({'Message':'TRUE',
                          'graph':graph,
                          'percentage':percentage,
                          'cards_data':cards_data,
                          'age_graph':age_graph,
                          'gender':gender,
-                         'gender_pie':gender_pie})
+                         'gender_pie':gender_pie,
+                         'map_data':map_data,
+                         'lat_mid':sum(lat)/len(lat),
+                         'long_mid':sum(long)/len(long)})
         
-    except:
-        return Response({'Message':"FALSE"})
+    # except:
+    #     return Response({'Message':"FALSE",'Error':'final except'})
 
 
 
