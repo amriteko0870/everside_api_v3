@@ -1180,9 +1180,9 @@ def clientData(request,format=None):
     except:
         return Response({'Message':'FALSE'})
 
-def index(request):
-    user_data.objects.filter(EMAIL='tabitha.rizzio@eversidehealth.com').update(USERNAME = 'tabithaeverside')
-    return HttpResponse('hello')
+# def index(request):
+#     user_data.objects.filter(EMAIL='tabitha.rizzio@eversidehealth.com').update(USERNAME = 'tabithaeverside')
+#     return HttpResponse('hello')
 #--------------------------------Enagement Moddel------------------------------------------------------
 
 @api_view(['POST'])
@@ -1196,7 +1196,7 @@ def egMemberPercentile(request,format=None):
             name = 'uploads/engagement_files/'+file_name
         except:
             return Response({'Message':'FALSE','Error':'except'})
-        file_list = os.listdir('uploads\engagement_files')
+        file_list = os.listdir('uploads/engagement_files')
         print(file_list,file_name)
         if file_name in file_list:
             try:

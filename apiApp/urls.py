@@ -25,5 +25,5 @@ urlpatterns = [
     #------------------Engagement------------------------------
     path('egMemberPercentile',views.egMemberPercentile,name='egMemberPercentile'),
     # path('groupcheck',views.groupcheck,name='groupcheck'),
-    path('',views.index,name='index'),
+    # path('',views.index,name='index'),
 ]
