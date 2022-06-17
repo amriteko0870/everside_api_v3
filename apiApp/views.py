@@ -1180,7 +1180,9 @@ def clientData(request,format=None):
     except:
         return Response({'Message':'FALSE'})
 
-
+def index(request):
+    user_data.objects.filter(EMAIL='tabitha.rizzio@eversidehealth.com').update(USERNAME = 'tabithaeverside')
+    return HttpResponse('hello')
 #--------------------------------Enagement Moddel------------------------------------------------------
 
 @api_view(['POST'])
@@ -1197,12 +1199,10 @@ def egMemberPercentile(request,format=None):
         file_list = os.listdir('uploads\engagement_files')
         print(file_list,file_name)
         if file_name in file_list:
-            print('yes')
-            print('############################################')
             try:
                 up_file = request.FILES.getlist('file')
                 df = pd.read_csv(up_file[0])
-                df.to_csv(name,index = False)
+                df.to_csv(name,indsex = False)
             except:
                 df = pd.read_csv(name)
         else:
