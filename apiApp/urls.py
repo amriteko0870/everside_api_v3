@@ -24,6 +24,6 @@ urlpatterns = [
     path('clientData',views.clientData,name='clientData'),
     #------------------Engagement------------------------------
     path('egMemberPercentile',views.egMemberPercentile,name='egMemberPercentile'),
-    # path('groupcheck',views.groupcheck,name='groupcheck'),
+    path('fileDownload',views.fileDownload,name='fileDownload'),
     # path('',views.index,name='index'),
 ]

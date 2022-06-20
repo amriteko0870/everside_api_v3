@@ -47,3 +47,9 @@ class user_data(models.Model):
     PASSWORD = models.CharField(max_length=250)
     USER_TYPE = models.CharField(max_length=3)
     TOKEN = models.CharField(max_length=300,default='0')
+
+
+class engagement_file_data(models.Model):
+    USERNAME = models.CharField(max_length=100)
+    FILE_NAME = models.CharField(max_length=100)
+    FILE_SIZE = models.BigIntegerField()

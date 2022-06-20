@@ -1,3 +1,4 @@
+from genericpath import getsize
 from pyexpat import model
 import numpy as np
 import pandas as pd
@@ -8,7 +9,7 @@ import re
 from operator import itemgetter 
 import os
 #-------------------------Django Modules---------------------------------------------
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse,FileResponse
 from django.shortcuts import render
 from django.db.models import Avg,Count,Case, When, IntegerField,Sum,FloatField,CharField
 from django.db.models import F,Func
@@ -23,7 +24,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import MultiPartParser,FormParser
 #--------------------------Models-----------------------------------------------------
-from apiApp.models import everside_nps, user_data
+from apiApp.models import engagement_file_data, everside_nps, user_data
 #--------------------------extra libs------------------------------------------------
 from apiApp.extra_vars import region_names,prob_func
 # Create your views here.
@@ -1180,37 +1181,58 @@ def clientData(request,format=None):
     except:
         return Response({'Message':'FALSE'})
 
+#------------------------------------------------------------------------------------------------------
 # def index(request):
-#     user_data.objects.filter(EMAIL='tabitha.rizzio@eversidehealth.com').update(USERNAME = 'tabithaeverside')
-#     return HttpResponse('hello')
+#     df = pd.read_csv('regionState.csv')
+#     df = df.dropna(subset=['State'])
+#     df.drop(df[df['State'] == 'Unknown'].index, inplace = True)
+#     for i in range(df.shape[0]):
+#         print(i)
+#         everside_nps.objects.filter(CLINIC_STATE=list(df['State'])[i]).update(REGION=list(df['Region'])[i])
+#     return HttpResponse('Hello')
 #--------------------------------Enagement Moddel------------------------------------------------------
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser,FormParser])
-def egMemberPercentile(request,format=None):
-        
+def egMemberPercentile(request,format=None):    
     try:
-        print(((request.data)['username']))
         try:
             file_name = str((request.data)['username'])+'.csv'
             name = 'uploads/engagement_files/'+file_name
         except:
             return Response({'Message':'FALSE','Error':'except'})
         file_list = os.listdir('uploads/engagement_files')
-        print(file_list,file_name)
         if file_name in file_list:
             try:
                 up_file = request.FILES.getlist('file')
                 df = pd.read_csv(up_file[0])
-                df.to_csv(name,indsex = False)
+                try:
+                    prob_func(df)
+                except:
+                    return Response({'Message':'FALSE','Error':'except'})
+                df.to_csv(name,index = False)
+                engagement_file_data.objects.filter(USERNAME = str((request.data)['username'])).delete()
+                data = engagement_file_data(USERNAME = str((request.data)['username']),
+                                            FILE_NAME = str(up_file[0]),
+                                            FILE_SIZE = (up_file[0]).size)
+                data.save()
             except:
-                df = pd.read_csv(name)
+                df = pd.read_csv(name)  
+        
         else:
             up_file = request.FILES.getlist('file')
             df = pd.read_csv(up_file[0])
             ndf = df[['GENDER','AGE','CLIENT_ID','MEMBER_ID','CLIENT_ENROLL_CONTRACT_TYP']]
+            try:
+                prob_func(df)
+            except:
+                return Response({'Message':'FALSE','Error':'except'})
             df.to_csv(name,index = False)
-        
+            engagement_file_data.objects.filter(USERNAME = str((request.data)['username'])).delete()
+            data = engagement_file_data(USERNAME = str((request.data)['username']),
+                                        FILE_NAME = str(up_file[0]),
+                                        FILE_SIZE = (up_file[0]).size)
+            data.save()
         out = prob_func(df)
         out_prob = list(out['probability'])
         low = 0 # n < 0.5
@@ -1384,8 +1406,12 @@ def egMemberPercentile(request,format=None):
                     'zip_count':(list(df['ZIP'])).count(zip[i])
             }
             map_data.append(frame)
-        print(len(map_data))
+        #---------------------------------File Name and Size-----------------------------------------
+        f_obj = engagement_file_data.objects.filter(USERNAME = str((request.data)['username'])).values()
+        #------------------------Response------------------------------------------------------------
         return Response({'Message':'TRUE',
+                         'file_name':(f_obj[0])['FILE_NAME'],
+                         'file_size':(f_obj[0])['FILE_SIZE'],
                          'graph':graph,
                          'percentage':percentage,
                          'cards_data':cards_data,
@@ -1399,5 +1425,21 @@ def egMemberPercentile(request,format=None):
     except:
         return Response({'Message':"FALSE",'Error':'final except'})
 
-
-
+@api_view(['GET'])
+@parser_classes([MultiPartParser,FormParser])
+def fileDownload(request,format=None):
+    try:
+        username = request.GET.get('username')
+        # username = 'vivekeko'
+        file_name = 'uploads/engagement_files/'+username+'.csv'
+        f_obj = engagement_file_data.objects.filter(USERNAME = username).values()
+        f_name = (f_obj[0])['FILE_NAME'][:-4]
+        print(file_name)
+        df = pd.read_csv(file_name)
+        out = prob_func(df)
+        a = 'uploads/engagement_files/'+f_name+'_'+username+'.csv'
+        out.to_csv(a,index=False)
+        response = FileResponse(open(a, 'rb'))
+        return response
+    except:
+        return Response({'Message':'FALSE'})
