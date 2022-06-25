@@ -339,13 +339,13 @@ def prob_func(df):
 #         print(i)
 #         everside_nps.objects.filter(CLINIC_STATE=list(df['State'])[i]).update(REGION=list(df['Region'])[i])
 #     return HttpResponse('Hello')
-
 #-------------------------------------------------------
 
  
 
+
 # def index(request):
-#     #everside_nps.objects.filter(WHATDIDWELLWITHAPP__length__lte = 2).update(WHATDIDWELLWITHAPP = 'nan')
+#     everside_nps.objects.filter(REGION = ' ').update(REGION = 'nan')
 #     return HttpResponse('hello')
 
 #---------------------------------------------------

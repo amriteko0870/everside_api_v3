@@ -1,5 +1,4 @@
 from genericpath import getsize
-from pyexpat import model
 import numpy as np
 import pandas as pd
 import time
@@ -60,7 +59,7 @@ def filterRegion(request,format=None):
             else:
                 end_date = str('1-')+str(int(end_year)+1)
             endDate = (time.mktime(datetime.datetime.strptime(end_date,"%m-%Y").timetuple())) - timestamp_sub         
-            obj = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).exclude(CLINIC_STATE__isnull=True).exclude(CLINIC_STATE__exact='nan').values_list('REGION',flat=True).distinct()
+            obj = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).exclude(REGION__isnull=True).exclude(REGION__exact='nan').values_list('REGION',flat=True).distinct()
             region = list(obj)
             region.sort()
         return Response({'Message':'TRUE','region':region})
@@ -99,8 +98,8 @@ def filterClinic(request,format=None):
 #-------------------- for Login -----------------------------------------------------
 @api_view(['POST'])
 def userLogin(request,format=None):
-    if request.method == 'POST':
-        try:
+    try:
+        if request.method == 'POST':
             data = request.data
             username = str(data['username'])
             password = str(data['password'])
@@ -109,8 +108,10 @@ def userLogin(request,format=None):
                 token = data[0]['TOKEN']
                 u_name = data[0]['USERNAME']
                 return Response({'Message':'TRUE','username':u_name,'token':token})
-        except:
+            else:
                 return Response({'Message':'FALSE'})
+    except:
+        return Response({'Message':'FALSE'})
 
            
             
@@ -125,10 +126,6 @@ def netPromoterScore(request,format=None):
             end_month = request.GET.get('end_month')
             region = (request.GET.get('region'))
             clinic = (request.GET.get('clinic'))
-            # print('###################################################################################')
-            # print((request.data)['username'],(request.headers)['Authorization'])
-            # print('###################################################################################')
-
             try:
                 check_token = user_data.objects.get(USERNAME = (request.data)['username'])
                 print((request.data)['username'])
@@ -740,21 +737,6 @@ def npsOverTime(request,format=None):
             
             nps = nps.values('SURVEY_MONTH' ).annotate(
                                                     count = Count(F('REVIEW_ID')),
-                                                    # promoter = twoDecimal((Cast(Sum(Case(
-                                                    #             When(nps_label='Promoter',then=1),
-                                                    #             default=0,
-                                                    #             output_field=IntegerField()
-                                                    #             )),FloatField())/F('count'))*100),\
-                                                    # passive =  twoDecimal((Cast(Sum(Case(
-                                                    #             When(nps_label='Passive',then=1),
-                                                    #             default=0,
-                                                    #             output_field=IntegerField()
-                                                    #             )),FloatField())/F('count'))*100),\
-                                                    # detractor = twoDecimal((Cast(Sum(Case(
-                                                    #             When(nps_label='Detractor',then=1),
-                                                    #             default=0,
-                                                    #             output_field=IntegerField()
-                                                    #             )),FloatField())/F('count'))*100),\
                                                     promoter = twoDecimal((Cast(Sum(Case(
                                                                 When(nps_label='Promoter',then=1),
                                                                 default=0,
@@ -1070,7 +1052,7 @@ def providersData(request,format=None):
 
 @api_view(['POST'])
 def clinicData(request,format=None):
-    # try:
+    try:
         if request.method == 'POST':
             start_year = request.GET.get('start_year')
             start_month = request.GET.get('start_month')
@@ -1122,8 +1104,8 @@ def clinicData(request,format=None):
                                  .order_by('clinic')
             # clinic_data = sorted(list(clinic_data), key=itemgetter('average_nps'),reverse=True)
         return Response({'Message':'True','data':clinic_data})
-    # except:
-    #     return Response({'Message':'FALSE'})
+    except:
+        return Response({'Message':'FALSE'})
 
 @api_view(['POST'])
 def clientData(request,format=None):
@@ -1182,14 +1164,6 @@ def clientData(request,format=None):
         return Response({'Message':'FALSE'})
 
 #------------------------------------------------------------------------------------------------------
-# def index(request):
-#     df = pd.read_csv('regionState.csv')
-#     df = df.dropna(subset=['State'])
-#     df.drop(df[df['State'] == 'Unknown'].index, inplace = True)
-#     for i in range(df.shape[0]):
-#         print(i)
-#         everside_nps.objects.filter(CLINIC_STATE=list(df['State'])[i]).update(REGION=list(df['Region'])[i])
-#     return HttpResponse('Hello')
 #--------------------------------Enagement Moddel------------------------------------------------------
 
 @api_view(['POST'])
@@ -1200,16 +1174,18 @@ def egMemberPercentile(request,format=None):
             file_name = str((request.data)['username'])+'.csv'
             name = 'uploads/engagement_files/'+file_name
         except:
-            return Response({'Message':'FALSE','Error':'except'})
+            return Response({'Message':'FALSE','Error':'Username Invalid'})
         file_list = os.listdir('uploads/engagement_files')
         if file_name in file_list:
             try:
                 up_file = request.FILES.getlist('file')
                 df = pd.read_csv(up_file[0])
+                if 'probability' in list(df.columns):
+                    return Response({'Message':'FALSE','Error':'Invalid File'})
                 try:
                     prob_func(df)
                 except:
-                    return Response({'Message':'FALSE','Error':'except'})
+                    return Response({'Message':'FALSE','Error':'Invalid File'})
                 df.to_csv(name,index = False)
                 engagement_file_data.objects.filter(USERNAME = str((request.data)['username'])).delete()
                 data = engagement_file_data(USERNAME = str((request.data)['username']),
@@ -1223,6 +1199,8 @@ def egMemberPercentile(request,format=None):
             up_file = request.FILES.getlist('file')
             df = pd.read_csv(up_file[0])
             ndf = df[['GENDER','AGE','CLIENT_ID','MEMBER_ID','CLIENT_ENROLL_CONTRACT_TYP']]
+            if 'probability' in list(df.columns):
+                return Response({'Message':'FALSE','Error':'Invalid File'})
             try:
                 prob_func(df)
             except:
@@ -1423,7 +1401,7 @@ def egMemberPercentile(request,format=None):
                          'long_mid':sum(long)/len(long)})
         
     except:
-        return Response({'Message':"FALSE",'Error':'final except'})
+        return Response({'Message':"FALSE",'Error':'Invalid File'})
 
 @api_view(['GET'])
 @parser_classes([MultiPartParser,FormParser])
