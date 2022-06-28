@@ -242,6 +242,7 @@ def netSentimentScore(request,format=None):
             positive_count = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).filter(sentiment_label='Positive').values()
             negative_count = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).filter(sentiment_label='Negative').values()
             extreme_count = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).filter(sentiment_label='Extreme').values()
+            neutral_count = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).filter(sentiment_label='Neutral').values()
 
             state = region
             if '' not in region:
@@ -249,12 +250,15 @@ def netSentimentScore(request,format=None):
                 positive_count = positive_count.filter(REGION__in = state)
                 negative_count = negative_count.filter(REGION__in = state)
                 extreme_count = extreme_count.filter(REGION__in = state)
+                neutral_count = neutral_count.filter(REGION__in = state)
+                
             
             if '' not in clinic:
                 total_count = total_count.filter(NPSCLINIC__in = clinic)
                 positive_count = positive_count.filter(NPSCLINIC__in = clinic)
                 negative_count = negative_count.filter(NPSCLINIC__in = clinic)
                 extreme_count = extreme_count.filter(NPSCLINIC__in = clinic)
+                neutral_count = neutral_count.filter(NPSCLINIC__in = clinic)
             
             if(len(positive_count)!=0):
                 positive = round(len(positive_count)/len(total_count)*100)
@@ -276,6 +280,13 @@ def netSentimentScore(request,format=None):
                     extreme = round(len(extreme_count)/len(total_count)*100,2)
             else:
                 extreme = 0
+            
+            if(len(neutral_count)!=0):
+                neutral = round(len(neutral_count)/len(total_count)*100)
+                if neutral == 0:
+                    neutral = round(len(neutral_count)/len(total_count)*100,2)
+            else:
+                neutral = 0
 
             nss ={
                     "nss_score":round(positive-negative-extreme),
@@ -286,7 +297,9 @@ def netSentimentScore(request,format=None):
                     "total_negative":len(negative_count),
                     "extreme":extreme,
                     "total_extreme":len(extreme_count),
-                    "total_neutral": len(total_count) - len(positive_count) - len(negative_count) - len(extreme_count)
+                    "neutral":neutral,
+                    "total_neutral": len(neutral_count),
+                    
                 }
                 
             nss_pie = [{
@@ -303,6 +316,11 @@ def netSentimentScore(request,format=None):
                         "label":"Extreme",
                         "percentage":extreme,
                         "color":"#DB2B39",
+                    },
+                    {
+                        "label":"Neutral",
+                        "percentage":neutral,
+                        "color":"#939799",
                     }]
             return Response({'Message':'TRUE',
                              'nss':nss,
@@ -1180,12 +1198,16 @@ def egMemberPercentile(request,format=None):
             try:
                 up_file = request.FILES.getlist('file')
                 df = pd.read_csv(up_file[0])
+                df['ZIP'] =  pd.to_numeric(df['ZIP'],errors='coerce')
+                zip_df = pd.read_csv('zip_lat_long.csv')
+                df = pd.merge(df,zip_df,on='ZIP',how='left')
                 if 'probability' in list(df.columns):
-                    return Response({'Message':'FALSE','Error':'Invalid File'})
+                    return Response({'Message':'FALSE','Error':'Invalid File1'})
+                prob_func(df)
                 try:
                     prob_func(df)
                 except:
-                    return Response({'Message':'FALSE','Error':'Invalid File'})
+                    return Response({'Message':'FALSE','Error':'Invalid File2'})
                 df.to_csv(name,index = False)
                 engagement_file_data.objects.filter(USERNAME = str((request.data)['username'])).delete()
                 data = engagement_file_data(USERNAME = str((request.data)['username']),
@@ -1193,11 +1215,17 @@ def egMemberPercentile(request,format=None):
                                             FILE_SIZE = (up_file[0]).size)
                 data.save()
             except:
-                df = pd.read_csv(name)  
+                df = pd.read_csv(name) 
+                df['ZIP'] =  pd.to_numeric(df['ZIP'],errors='coerce') 
+                zip_df = pd.read_csv('zip_lat_long.csv')
+                # df = pd.merge(df,zip_df,on='ZIP',how='left')
         
         else:
             up_file = request.FILES.getlist('file')
             df = pd.read_csv(up_file[0])
+            df['ZIP'] =  pd.to_numeric(df['ZIP'],errors='coerce')
+            zip_df = pd.read_csv('zip_lat_long.csv')
+            df = pd.merge(df,zip_df,on='ZIP',how='left')
             ndf = df[['GENDER','AGE','CLIENT_ID','MEMBER_ID','CLIENT_ENROLL_CONTRACT_TYP']]
             if 'probability' in list(df.columns):
                 return Response({'Message':'FALSE','Error':'Invalid File'})
@@ -1365,27 +1393,59 @@ def egMemberPercentile(request,format=None):
 
         #---------------------------------Map-------------------------------------------------------
         state_codes = region_names()
-        zip_df = pd.read_csv('zip_codes.csv')
-        ndf = df.drop_duplicates(subset='ZIP', keep="last")
-        lat_long_df = pd.merge(ndf,zip_df,how='left',on=['ZIP'])
-        state = list(lat_long_df['STATE'])
-        region = list(lat_long_df['REGION'])
+        zip_df = pd.read_csv('zip_lat_long.csv')
+        # ndf = df.drop_duplicates(subset='ZIP', keep="last")
+        # lat_long_df = pd.merge(ndf,zip_df,how='left',on=['ZIP'])
+        lat_long_df = df
+        lat_long_df['Y'] = lat_long_df['Y'].fillna(0)
+        lat_long_df['X'] = lat_long_df['X'].fillna(0)
+        lat_long_df['ZIP'] = lat_long_df['ZIP'].fillna(0)
+
+        state = list(lat_long_df['STATE_ZIP'])
         long = list(lat_long_df['Y'])
         lat = list(lat_long_df['X'])
         zip = list(lat_long_df['ZIP'])
+
+
         map_data = []
         for i in range(lat_long_df.shape[0]):
+            try:
+                state_data = state_codes[state[i]]
+            except:
+                state_data = state[i]
             frame = {
-                    'state':state_codes[state[i]],
-                    'region':region[i],
+                    'state':str(state_data),
                     'long':long[i],
                     'lat':lat[i],
-                    'zip':zip[i],
+                    'zip':str(zip[i]),
                     'zip_count':(list(df['ZIP'])).count(zip[i])
             }
-            map_data.append(frame)
+            map_data.append(frame)        
         #---------------------------------File Name and Size-----------------------------------------
         f_obj = engagement_file_data.objects.filter(USERNAME = str((request.data)['username'])).values()
+        #--------------------------------------------------------------------------------------------
+        df['REGION_ZIP'] = df['REGION_ZIP'].fillna('unknown')
+        regions = list(set(list(df['REGION_ZIP'])))
+        average_table = []
+        us_census = pd.read_csv('us_census_data.csv')
+        average_df = pd.merge(df,us_census,on='ZIP',how='left')
+        for i in regions:
+            frame = {}
+
+            ndf = average_df.loc[df['REGION_ZIP'] == i]
+            try:
+                frame = {
+                    'region':i,
+                    '__Ethnic_White':str(np.nansum(np.array(list(ndf['__Ethnic_White'])))/(ndf.shape)[0]),
+                    'per_black':str(np.nansum(np.array(list(ndf['__Black_or_African_American_alone'])))/(ndf.shape)[0]),
+                    'per_asian':str(np.nansum(np.array(list(ndf['__Asian'])))/(ndf.shape)[0]),
+                    '__Hispanic_or_Latino':str(np.nansum(np.array(list(ndf['__Hispanic_or_Latino_(of_any_race)'])))/(ndf.shape)[0]),
+                    'Percent_Insured':str(np.nansum(np.array(list(ndf['Percent_Insured'])))/(ndf.shape)[0]),
+                    'PCP_Avail':str(np.nansum(np.array(list(ndf['PCP_Avail'])))/(ndf.shape)[0]),
+                }
+                average_table.append(frame)
+            except:
+                print(i)
         #------------------------Response------------------------------------------------------------
         return Response({'Message':'TRUE',
                          'file_name':(f_obj[0])['FILE_NAME'],
@@ -1397,11 +1457,13 @@ def egMemberPercentile(request,format=None):
                          'gender':gender,
                          'gender_pie':gender_pie,
                          'map_data':map_data,
-                         'lat_mid':sum(lat)/len(lat),
-                         'long_mid':sum(long)/len(long)})
-        
+                         'lat_mid':np.nansum(np.array(lat))/len(lat),
+                         'long_mid':np.nansum(np.array(long))/len(long),
+                         'average_table':average_table,
+                         })
+        #------------------------------------------------------------------------------------------------
     except:
-        return Response({'Message':"FALSE",'Error':'Invalid File'})
+        return Response({'Message':"FALSE",'Error':'Invalid File main'})
 
 @api_view(['GET'])
 @parser_classes([MultiPartParser,FormParser])
@@ -1421,3 +1483,21 @@ def fileDownload(request,format=None):
         return response
     except:
         return Response({'Message':'FALSE'})
+
+
+
+
+@api_view(['POST'])
+@parser_classes([MultiPartParser,FormParser])
+def check(request,format=None):
+    up_file = request.FILES.getlist('file')
+    df = pd.read_csv(up_file[0])
+    df['ZIP'] =  pd.to_numeric(df['ZIP'],errors='coerce')
+    zip_df = pd.read_csv('zip_lat_long.csv')
+    df = pd.merge(df,zip_df,on='ZIP',how='left')
+    # print(df.dtypes)
+    df_us_census_data = pd.read_csv('us_census_data.csv')
+    # print(df_us_census_data.dtypes)
+
+    prob_func(df)
+    return Response({'Message':'Hello'})

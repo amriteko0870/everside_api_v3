@@ -112,24 +112,24 @@ def prob_func(df):
 
     #State preparation
 
-    df_engagement_model_data['d1_STATE'] = df_engagement_model_data[df_engagement_model_data.STATE == 'IN'].STATE
+    df_engagement_model_data['d1_STATE'] = df_engagement_model_data[df_engagement_model_data.STATE_ZIP == 'IN'].STATE_ZIP
     df_engagement_model_data['d1_STATE'] = np.where(df_engagement_model_data['d1_STATE'].isna(),0,1)
 
-    df_engagement_model_data['d2_STATE'] = df_engagement_model_data[df_engagement_model_data.STATE.isin(['CO','OH'])].STATE
+    df_engagement_model_data['d2_STATE'] = df_engagement_model_data[df_engagement_model_data.STATE_ZIP.isin(['CO','OH'])].STATE_ZIP
     df_engagement_model_data['d2_STATE'] = np.where(df_engagement_model_data['d2_STATE'].isna(),0,1)
 
-    df_engagement_model_data['d3_STATE'] = df_engagement_model_data[df_engagement_model_data.STATE == 'MO'].STATE
+    df_engagement_model_data['d3_STATE'] = df_engagement_model_data[df_engagement_model_data.STATE_ZIP == 'MO'].STATE_ZIP
     df_engagement_model_data['d3_STATE'] = np.where(df_engagement_model_data['d3_STATE'].isna(),0,1)
 
-    df_engagement_model_data['d4_STATE'] = df_engagement_model_data[df_engagement_model_data.STATE == 'NV'].STATE
+    df_engagement_model_data['d4_STATE'] = df_engagement_model_data[df_engagement_model_data.STATE_ZIP == 'NV'].STATE_ZIP
     df_engagement_model_data['d4_STATE'] = np.where(df_engagement_model_data['d4_STATE'].isna(),0,1)
 
     #Region Preparation
 
-    df_engagement_model_data['d2_REGION'] = df_engagement_model_data[df_engagement_model_data.REGION == 'Northeast'].REGION
+    df_engagement_model_data['d2_REGION'] = df_engagement_model_data[df_engagement_model_data.REGION_ZIP == 'Northeast'].REGION_ZIP
     df_engagement_model_data['d2_REGION'] = np.where(df_engagement_model_data['d2_REGION'].isna(),0,1)
 
-    df_engagement_model_data['d3_REGION'] = df_engagement_model_data[df_engagement_model_data.REGION == 'South'].REGION
+    df_engagement_model_data['d3_REGION'] = df_engagement_model_data[df_engagement_model_data.REGION_ZIP == 'South'].REGION_ZIP
     df_engagement_model_data['d3_REGION'] = np.where(df_engagement_model_data['d3_REGION'].isna(),0,1)
 
     #Age Data Preparation

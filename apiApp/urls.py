@@ -22,8 +22,11 @@ urlpatterns = [
     path('providersData',views.providersData,name='providersData'),
     path('clinicData',views.clinicData,name='clinicData'),
     path('clientData',views.clientData,name='clientData'),
+ 
+    
     #------------------Engagement------------------------------
     path('egMemberPercentile',views.egMemberPercentile,name='egMemberPercentile'),
     path('fileDownload',views.fileDownload,name='fileDownload'),
+    path('check',views.check,name='check'),
     # path('',views.index,name='index'),
 ]
