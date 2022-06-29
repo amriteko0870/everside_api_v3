@@ -27,6 +27,17 @@ urlpatterns = [
     #------------------Engagement------------------------------
     path('egMemberPercentile',views.egMemberPercentile,name='egMemberPercentile'),
     path('fileDownload',views.fileDownload,name='fileDownload'),
-    path('check',views.check,name='check'),
-    # path('',views.index,name='index'),
+
+
+    #------------------ Download files -----------------------------
+    path('averageTableDownload',views.averageTableDownload,name='averageTableDownload'),
+    path('totalCommentsDownload',views.totalCommentsDownload,name='totalCommentsDownload'),
+    path('alertCommentsDownload',views.alertCommentsDownload,name='alertCommentsDownload'),
+    
+    #------------------ Files Delete -------------------------------------
+    path('logout',views.logout,name='logout'),
+    
+
+
+    # path('',views.index,name='index'),   
 ]

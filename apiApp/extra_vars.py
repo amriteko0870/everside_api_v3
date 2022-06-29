@@ -68,7 +68,7 @@ def prob_func(df):
     
     df_us_census_data = pd.read_csv('us_census_data.csv')
 
-    df_engagement_model_data = df_engagement_client_data.merge(df_us_census_data, on = 'ZIP', how = 'left')
+    df_engagement_model_data = df_engagement_client_data.merge(df_us_census_data, on = 'zip', how = 'left')
 
 
     df_engagement_model_data = df_engagement_model_data.rename(columns = {'__Black_or_African_American_alone':'per_black',
@@ -134,13 +134,13 @@ def prob_func(df):
 
     #Age Data Preparation
 
-    df_engagement_model_data['d1_AGE_O'] = df_engagement_model_data[df_engagement_model_data.AGE <= 28].AGE
+    df_engagement_model_data['d1_AGE_O'] = df_engagement_model_data[df_engagement_model_data.age <= 28].age
     df_engagement_model_data['d1_AGE_O'] = np.where(df_engagement_model_data['d1_AGE_O'].isna(),0,1)
 
-    df_engagement_model_data['d2_AGE_O'] = df_engagement_model_data[(df_engagement_model_data.AGE > 28) & (df_engagement_model_data.AGE <= 47)].AGE
+    df_engagement_model_data['d2_AGE_O'] = df_engagement_model_data[(df_engagement_model_data.age > 28) & (df_engagement_model_data.age <= 47)].age
     df_engagement_model_data['d2_AGE_O'] = np.where(df_engagement_model_data['d2_AGE_O'].isna(),0,1)
 
-    df_engagement_model_data['d3_AGE_O'] = df_engagement_model_data[(df_engagement_model_data.AGE > 47) & (df_engagement_model_data.AGE <= 59)].AGE
+    df_engagement_model_data['d3_AGE_O'] = df_engagement_model_data[(df_engagement_model_data.age > 47) & (df_engagement_model_data.age <= 59)].age
     df_engagement_model_data['d3_AGE_O'] = np.where(df_engagement_model_data['d3_AGE_O'].isna(),0,1)
 
     #Black and Asian Data Preparation
@@ -231,7 +231,7 @@ def prob_func(df):
         probab.append(probb)
 
 
-    df_engagement_model_data['probability'] = probab
+    df_engagement_model_data['probability_eng'] = probab
 
     return(df_engagement_model_data)
 
@@ -371,4 +371,295 @@ def prob_func(df):
 #                     TOKEN    = TOKEN,
 #     )
 #     data.save()   
+#     return HttpResponse('Hello')
+
+
+
+# @api_view(['POST'])
+# @parser_classes([MultiPartParser,FormParser])
+# def egMemberPercentile_old(request,format=None):    
+#     try:
+#         try:
+#             file_name = str((request.data)['username'])+'.csv'
+#             name = 'uploads/engagement_files/'+file_name
+#         except:
+#             return Response({'Message':'FALSE','Error':'Username Invalid'})
+#         file_list = os.listdir('uploads/engagement_files')
+#         if file_name in file_list:
+#             try:
+#                 up_file = request.FILES.getlist('file')
+#                 df = pd.read_csv(up_file[0])
+#                 df['ZIP'] =  pd.to_numeric(df['ZIP'],errors='coerce')
+#                 zip_df = pd.read_csv('zip_lat_long.csv')
+#                 df = pd.merge(df,zip_df,on='ZIP',how='left')
+#                 if 'probability' in list(df.columns):
+#                     return Response({'Message':'FALSE','Error':'Invalid File1'})
+#                 prob_func(df)
+#                 try:
+#                     prob_func(df)
+#                 except:
+#                     return Response({'Message':'FALSE','Error':'Invalid File2'})
+#                 df.to_csv(name,index = False)
+#                 engagement_file_data.objects.filter(USERNAME = str((request.data)['username'])).delete()
+#                 data = engagement_file_data(USERNAME = str((request.data)['username']),
+#                                             FILE_NAME = str(up_file[0]),
+#                                             FILE_SIZE = (up_file[0]).size)
+#                 data.save()
+#             except:
+#                 df = pd.read_csv(name) 
+#                 df['ZIP'] =  pd.to_numeric(df['ZIP'],errors='coerce') 
+#                 zip_df = pd.read_csv('zip_lat_long.csv')
+#                 # df = pd.merge(df,zip_df,on='ZIP',how='left')
+        
+#         else:
+#             up_file = request.FILES.getlist('file')
+#             df = pd.read_csv(up_file[0])
+#             df['ZIP'] =  pd.to_numeric(df['ZIP'],errors='coerce')
+#             zip_df = pd.read_csv('zip_lat_long.csv')
+#             df = pd.merge(df,zip_df,on='ZIP',how='left')
+#             ndf = df[['GENDER','AGE','CLIENT_ID','MEMBER_ID','CLIENT_ENROLL_CONTRACT_TYP']]
+#             if 'probability' in list(df.columns):
+#                 return Response({'Message':'FALSE','Error':'Invalid File'})
+#             try:
+#                 prob_func(df)
+#             except:
+#                 return Response({'Message':'FALSE','Error':'except'})
+#             df.to_csv(name,index = False)
+#             engagement_file_data.objects.filter(USERNAME = str((request.data)['username'])).delete()
+#             data = engagement_file_data(USERNAME = str((request.data)['username']),
+#                                         FILE_NAME = str(up_file[0]),
+#                                         FILE_SIZE = (up_file[0]).size)
+#             data.save()
+#         out = prob_func(df)
+#         out_prob = list(out['probability'])
+#         low = 0 # n < 0.5
+#         med = 0 # 0.5 < n < 0.75
+#         high = 0 # 0.75 < n
+#         graph = [] 
+#         p_values = [0,1,25,33,50,66,75,95,99,100]
+#         for i in p_values:
+#             p = np.percentile(out_prob,i)
+#             percentile_name = "P"+str(i)
+#             percentile_value = round(p,3)
+#             member_score = out_prob.count(p)
+#             if p < 0.5:
+#                 low = low + 1
+#             elif 0.5 <= p < 0.75:
+#                 med = med + 1
+#             else:
+#                 high = high + 1
+
+#             frame = {
+#                 'percentile_name':percentile_name,
+#                 'percentile_value':percentile_value,
+#                 'member_score':member_score
+#             }
+#             graph.append(frame)
+#             percentage = {
+#                 'low':str(low*10)+"%",
+#                 'medium':str(low*10+med*10)+"%",
+#                 'high':'100%',
+#             }
+# #--------------------------------------Card Data----------------------------------------------------
+#         rows = df.shape[0]
+#         columns = df.shape[1]
+#         client_count = len(set(list(df['CLIENT_ID'])))
+#         member_count = len(set(list(df['MEMBER_ID'])))
+#         try:
+#             opt_in = list(df['CLIENT_ENROLL_CONTRACT_TYP']).count('Opt In')
+#         except:
+#             opt_in = 0
+#         try:
+#             flat_fee = list(df['CLIENT_ENROLL_CONTRACT_TYP']).count('Flat Fee')
+#         except:
+#             flat_fee = 0
+#         try:
+#             all_in_eligible = list(df['CLIENT_ENROLL_CONTRACT_TYP']).count('All-In-Eligible')
+#         except:
+#             all_in_eligible = 0
+#         try:
+#             near_site = list(df['CLIENT_DEF_HC_TYPE']).count('Near Site')
+#         except:
+#             near_site = 0
+#         try:
+#             on_site = list(df['CLIENT_DEF_HC_TYPE']).count('On Site')
+#         except:
+#             on_site = 0
+#         cards_data = [
+#                 {
+#                     'name':'Rows',
+#                     'value':rows
+#                 },
+#                 {
+#                     'name':'Columns',
+#                     'value':columns
+#                 },
+#                 {
+#                     'name':'Clients',
+#                     'value':client_count
+#                 },
+#                 {
+#                     'name':'Members',
+#                     'value':member_count
+#                 },
+#                 {
+#                     'name':'Opt In',
+#                     'value':opt_in
+#                 },
+#                 {
+#                     'name':'Flat Fee',
+#                     'value':flat_fee
+#                 },
+#                 {
+#                     'name':'All In Eligible',
+#                     'value':all_in_eligible
+#                 },
+#                 {
+#                     'name':'Near Site',
+#                     'value':near_site
+#                 },
+#                 {
+#                     'name':'On Site',
+#                     'value':on_site
+#                 },
+#         ]
+# #-----------------------------------------Age Graph--------------------------------------------
+#         group_list = [(0,12),(13,19),(20,29),(30,39),(40,49),(50,59),(60,69),(70,79),(80,89),(90,1000)]
+#         age_list = list(df['AGE'])
+#         age_graph = []
+#         for i in group_list:
+#             if(i[1]<90):  
+#                 age_graph.append(
+#                                 {
+#                                     'groupName':str(i[0])+'-'+str(i[1]),
+#                                     'groupValue': sum(map(age_list.count, range(i[0],i[1]+1)))
+
+#                                 }) 
+#             else:
+#                   age_graph.append(
+#                                 {
+#                                     'groupName':str(i[0])+'+',
+#                                     'groupValue': sum(map(age_list.count, range(i[0],i[1]+1)))
+
+#                                 })         
+
+# #---------------------------------------Gender Chart-----------------------------------------------------
+#         gender_list = list(df['GENDER'])
+#         gender_list = list(map(lambda x: x.lower(), gender_list))
+#         try:
+#             male_count = gender_list.count('male')
+#         except:
+#             male_count = 0
+#         try:
+#             female_count = gender_list.count('female')
+#         except:
+#             female_count = 0
+#         try:
+#             others_count = gender_list.count('others')
+#         except:
+#             others_count = 0
+#         gender = {
+#               'total_male':male_count,
+#               'male':round((male_count/len(gender_list))*100,2),
+#               'total_female':female_count,
+#               'female':round((female_count/len(gender_list))*100,2),
+#               'total_other':others_count,
+#               'other': round((others_count/len(gender_list))*100,2),  
+#         }
+#         gender_pie = [{
+#                         'label':'Male',
+#                         'percentage': round((male_count/len(gender_list))*100,2),
+#                         'color': '#39a0ed'
+#                     },
+#                     {
+#                         'label':'Female',
+#                         'percentage': round((female_count/len(gender_list))*100,2),
+#                         'color': '#13c4a3'
+#                     },
+#                     {
+#                         'label':'Other',
+#                         'percentage': round((others_count/len(gender_list))*100,2),
+#                         'color': '#d77a69'
+#                     }]
+
+#         #---------------------------------Map-------------------------------------------------------
+#         state_codes = region_names()
+#         zip_df = pd.read_csv('zip_lat_long.csv')
+#         # ndf = df.drop_duplicates(subset='ZIP', keep="last")
+#         # lat_long_df = pd.merge(ndf,zip_df,how='left',on=['ZIP'])
+#         lat_long_df = df
+#         lat_long_df['Y'] = lat_long_df['Y'].fillna(0)
+#         lat_long_df['X'] = lat_long_df['X'].fillna(0)
+#         lat_long_df['ZIP'] = lat_long_df['ZIP'].fillna(0)
+
+#         state = list(lat_long_df['STATE_ZIP'])
+#         long = list(lat_long_df['Y'])
+#         lat = list(lat_long_df['X'])
+#         zip = list(lat_long_df['ZIP'])
+
+
+#         map_data = []
+#         for i in range(lat_long_df.shape[0]):
+#             try:
+#                 state_data = state_codes[state[i]]
+#             except:
+#                 state_data = state[i]
+#             frame = {
+#                     'state':str(state_data),
+#                     'long':long[i],
+#                     'lat':lat[i],
+#                     'zip':str(zip[i]),
+#                     'zip_count':(list(df['ZIP'])).count(zip[i])
+#             }
+#             map_data.append(frame)        
+#         #---------------------------------File Name and Size-----------------------------------------
+#         f_obj = engagement_file_data.objects.filter(USERNAME = str((request.data)['username'])).values()
+#         #--------------------------------------------------------------------------------------------
+#         df['REGION_ZIP'] = df['REGION_ZIP'].fillna('unknown')
+#         regions = list(set(list(df['REGION_ZIP'])))
+#         average_table = []
+#         us_census = pd.read_csv('us_census_data.csv')
+#         average_df = pd.merge(df,us_census,on='ZIP',how='left')
+#         for i in regions:
+#             frame = {}
+
+#             ndf = average_df.loc[df['REGION_ZIP'] == i]
+#             try:
+#                 frame = {
+#                     'region':i,
+#                     '__Ethnic_White':str(np.nansum(np.array(list(ndf['__Ethnic_White'])))/(ndf.shape)[0]),
+#                     'per_black':str(np.nansum(np.array(list(ndf['__Black_or_African_American_alone'])))/(ndf.shape)[0]),
+#                     'per_asian':str(np.nansum(np.array(list(ndf['__Asian'])))/(ndf.shape)[0]),
+#                     '__Hispanic_or_Latino':str(np.nansum(np.array(list(ndf['__Hispanic_or_Latino_(of_any_race)'])))/(ndf.shape)[0]),
+#                     'Percent_Insured':str(np.nansum(np.array(list(ndf['Percent_Insured'])))/(ndf.shape)[0]),
+#                     'PCP_Avail':str(np.nansum(np.array(list(ndf['PCP_Avail'])))/(ndf.shape)[0]),
+#                 }
+#                 average_table.append(frame)
+#             except:
+#                 print(i)
+#         #------------------------Response------------------------------------------------------------
+#         return Response({'Message':'TRUE',
+#                          'file_name':(f_obj[0])['FILE_NAME'],
+#                          'file_size':(f_obj[0])['FILE_SIZE'],
+#                          'graph':graph,
+#                          'percentage':percentage,
+#                          'cards_data':cards_data,
+#                          'age_graph':age_graph,
+#                          'gender':gender,
+#                          'gender_pie':gender_pie,
+#                          'map_data':map_data,
+#                          'lat_mid':np.nansum(np.array(lat))/len(lat),
+#                          'long_mid':np.nansum(np.array(long))/len(long),
+#                          'average_table':average_table,
+#                          })
+#         #------------------------------------------------------------------------------------------------
+#     except:
+#         return Response({'Message':"FALSE",'Error':'Invalid File main'})
+
+
+
+# def index(request):
+#     password = '1234'
+#     PASSWORD1 = make_password(password)
+#     user_data.objects.update(PASSWORD=PASSWORD1)
 #     return HttpResponse('Hello')
