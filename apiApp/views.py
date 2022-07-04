@@ -107,7 +107,12 @@ def userLogin(request,format=None):
             if (check_password(password,data[0]['PASSWORD'])):
                 token = data[0]['TOKEN']
                 u_name = data[0]['USERNAME']
-                return Response({'Message':'TRUE','username':u_name,'token':token})
+                admin = data[0]['USER_TYPE']
+                if admin == 'A' or admin == 'SA':
+                    admin_type = True
+                else:
+                    admin_type = False
+                return Response({'Message':'TRUE','username':u_name,'token':token,'admin_type':admin_type})
             else:
                 return Response({'Message':'FALSE'})
     except:
@@ -1364,6 +1369,7 @@ def fileDownload(request,format=None):
         df = pd.merge(df,lat_long_df,on='zip',how='left')
         
         out = prob_func(df)
+        # a = 'uploads/engagement_download_files/'+f_name+'_'+username+'.csv'
         a = 'uploads/engagement_download_files/'+f_name+'_'+username+'.csv'
         out.to_csv(a,index=False)
         response = FileResponse(open(a, 'rb'))
@@ -1552,7 +1558,7 @@ def logout(request):
     except:
         pass
     try:
-        a = 'uploads/engagement_download_files/'+'_'+username+'_average_table.csv'
+        a = 'uploads/engagement_download_files/'+username+'_average_table.csv'
         os.remove(a)
     except:
         pass
@@ -1565,3 +1571,69 @@ def logout(request):
         pass
 
     return Response({'Message':'TRUE'})
+
+
+
+
+@api_view(['POST'])
+def userList(request):
+    if request.method == 'POST':
+        user_list = user_data.objects.exclude(USER_TYPE__in=['T','A']).values_list('USERNAME',flat=True)
+        return Response({'Message':'TRUE','user_list':list(user_list)[::-1]})
+
+@api_view(['POST'])
+def deleteUser(request):
+    try:
+        if request.method == 'POST':
+            username = (request.data)['username']
+            user_data.objects.filter(USERNAME=username).delete()
+            return Response({'Message':'TRUE'})
+    except:
+            return Response({'Message':'FALSE'})
+
+
+@api_view(['POST'])
+def resetPassword(request):
+    if request.method == 'POST':
+        username = (request.data)['username']
+        password = (request.data)['password']
+        print('password',password)
+        PASSWORD1 = make_password(password)
+        print('reset',username)
+        user_data.objects.filter(USERNAME=username).update(PASSWORD=PASSWORD1)
+        return Response({'Message':'TRUE'})
+
+@api_view(['POST'])
+def createUser(request):
+    if request.method == 'POST':
+        firstname = ''
+        lastname = ''
+        username = ((request.data)['username']).lower()
+        email = ((request.data)['email']).lower()
+        password = (request.data)['password']
+        PASSWORD1 = make_password(password)
+        TOKEN = make_password(username+password)
+        try:
+            user_data.objects.get(EMAIL = email)
+            return Response({'Message':'FALSE','Error':'Email already exist'})
+
+        except:
+            pass
+
+        try:
+            user_data.objects.get(USERNAME = username)
+            return Response({'Message':'FALSE','Error':'Username already exist'})
+        except:
+            pass
+
+        data = user_data(
+                        FIRST_NAME = firstname,
+                        LAST_NAME = lastname,
+                        USERNAME = username,
+                        EMAIL = email,
+                        USER_TYPE = '0',
+                        PASSWORD = PASSWORD1,
+                        TOKEN    = TOKEN,
+        )
+        data.save()   
+        return Response({'Message':'TRUE'})

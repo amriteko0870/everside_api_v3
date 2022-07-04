@@ -38,6 +38,18 @@ urlpatterns = [
     path('logout',views.logout,name='logout'),
     
 
+    #------------------- Users ----------------------------------------------
+    path('resetPassword',views.resetPassword,name='resetPassword'),
+    path('createUser',views.createUser,name='createUser'),
+    path('userList',views.userList,name='userList'),
+    path('deleteUser',views.deleteUser,name='deleteUser'),
+
+    
+    
+
+    
+    
+
 
     # path('',views.index,name='index'),   
 ]
