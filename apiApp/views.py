@@ -28,8 +28,8 @@ from apiApp.models import engagement_file_data, everside_nps, user_data
 from apiApp.extra_vars import region_names,prob_func
 # Create your views here.
 #-------------- Global Variable--------------------------------------------------------
-timestamp_sub = 86400 +19800
-timestamp_start = 0+19800
+timestamp_sub = 86400 #+19800
+timestamp_start = 0#+19800
 #----------------------------Annotation Functions--------------------------------------
 class roundRating(Func):
     function = 'ROUND'
@@ -808,6 +808,10 @@ def nssOverTime(request,format=None):
             clinic = (request.GET.get('clinic'))
             region = re.split(r"-|,", region)
             clinic = re.split(r"-|,", clinic)
+            print('-------------------------------------')
+            print(start_month,start_year)
+            print(end_month,end_year)
+
             try:
                 check_token = user_data.objects.get(USERNAME = (request.data)['username'])
                 if(check_token.TOKEN != (request.headers)['Authorization']):
@@ -821,6 +825,10 @@ def nssOverTime(request,format=None):
             else:
                 end_date = str('1-')+str(int(end_year)+1)
             endDate = (time.mktime(datetime.datetime.strptime(end_date,"%m-%Y").timetuple())) - timestamp_sub
+            print('-------------------------------------')
+            print(start_date,startDate)
+            print(end_date,endDate)
+            print('-------------------------------------')
             nss = everside_nps.objects.filter(TIMESTAMP__gte=startDate).filter(TIMESTAMP__lte=endDate).values()
             
             state = region
@@ -862,9 +870,7 @@ def nssOverTime(request,format=None):
                                                                 default=F('nss_abs'),
                                                                 output_field=FloatField()
                                                               )
-                                                            
-
-            )   
+                                                        )   
             nss = list(nss)
             nss.sort(key = lambda x: dt.strptime(x['SURVEY_MONTH'], '%b-%y')) 
         return Response({'Message':'True','nss_over_time':nss})
@@ -1205,8 +1211,10 @@ def egMemberPercentile(request,format=None):
         
         #----------------- Check if previous file exist------------------------------------------
         previous_files = os.listdir('uploads/engagement_files')
+        previous_file_flag = 0
         if(file_name in previous_files):
             df = pd.read_csv(file_path)
+            previous_file_flag = 1
         
         #--------------- Check if file uploaded -------------------------------------------------
         try:
@@ -1220,8 +1228,11 @@ def egMemberPercentile(request,format=None):
             data.save()
             df.to_csv(file_path)
         except:
-            pass
-
+            if previous_file_flag == 0:
+                return Response({'Message':'FALSE','Error':'No Previous File found'})
+                
+        
+        
         #--------------Check variables in file----------------------------------------------------    
         try:
             df = df.rename(columns=str.lower)
@@ -1321,7 +1332,6 @@ def egMemberPercentile(request,format=None):
         
         average_table = []
         regions = list(set(list(average_table_df['REGION_ZIP'])))
-        print(regions)
         for i in regions:
             ndf = average_table_df.loc[average_table_df['REGION_ZIP'] == i]
             frame = {
@@ -1338,6 +1348,33 @@ def egMemberPercentile(request,format=None):
 
         #------------------------- File Object ---------------------------------------------
         f_obj = engagement_file_data.objects.filter(USERNAME = str((request.data)['username'])).values()
+
+        #-------------------------- Map -----------------------------------------------------
+        state_codes = region_names()
+        df['zip'] =  pd.to_numeric(df['zip'],errors='coerce')
+        map_df = df.drop_duplicates(subset=['zip'],keep='last')
+        lat_long_df = pd.merge(map_df,lat_long_df,on='zip',how='left')
+        lat_long_df['Y'] = lat_long_df['Y'].fillna(0)
+        lat_long_df['X'] = lat_long_df['X'].fillna(0)
+        lat_long_df['zip'] = lat_long_df['zip'].fillna(0)
+        state = list(lat_long_df['STATE_ZIP'])
+        long = list(lat_long_df['Y'])
+        lat = list(lat_long_df['X'])
+        zip = list(lat_long_df['zip'])
+        map_data = []
+        for i in range(lat_long_df.shape[0]):
+            try:
+                state_data = state_codes[state[i]]
+            except:
+                state_data = state[i]
+            frame = {
+                    'state':str(state_data),
+                    'long':long[i],
+                    'lat':lat[i],
+                    'zip':str(zip[i]),
+                    'zip_count':(list(df['zip'])).count(zip[i])
+            }
+            map_data.append(frame)       
         
         #--------------------------------- Response ----------------------------------------
         return Response({'Message':'TRUE',
@@ -1348,6 +1385,9 @@ def egMemberPercentile(request,format=None):
                         'cards_data':cards_data,
                         'file_name':(f_obj[0])['FILE_NAME'],
                         'file_size':(f_obj[0])['FILE_SIZE'],
+                        'map_data':map_data,
+                        'lat_mid':np.nansum(np.array(lat))/len(lat),
+                        'long_mid':np.nansum(np.array(long))/len(long),
                         })
     except:
         return Response({'Message':'FALSE'})
@@ -1575,7 +1615,7 @@ def logout(request):
 
 
 
-@api_view(['POST'])
+@api_view(['POST','GET'])
 def userList(request):
     if request.method == 'POST':
         user_list = user_data.objects.exclude(USER_TYPE__in=['T','A']).values_list('USERNAME',flat=True)
@@ -1587,6 +1627,28 @@ def deleteUser(request):
         if request.method == 'POST':
             username = (request.data)['username']
             user_data.objects.filter(USERNAME=username).delete()
+            try:
+                a = 'uploads/engagement_download_files/'+username+'_alert_comments.csv'
+                os.remove(a)
+            except:
+                pass
+            try:
+                a = 'uploads/engagement_download_files/'+username+'_all_comments.csv'
+                os.remove(a)
+            except:
+                pass
+            try:
+                a = 'uploads/engagement_download_files/'+username+'_average_table.csv'
+                os.remove(a)
+            except:
+                pass
+            try:
+                f_obj = engagement_file_data.objects.filter(USERNAME = username).values()
+                f_name = (f_obj[0])['FILE_NAME'][:-4]
+                a = 'uploads/engagement_download_files/'+f_name+'_'+username+'.csv'
+                os.remove(a)
+            except:
+                pass
             return Response({'Message':'TRUE'})
     except:
             return Response({'Message':'FALSE'})
@@ -1637,3 +1699,8 @@ def createUser(request):
         )
         data.save()   
         return Response({'Message':'TRUE'})
+
+
+def index(request):
+    everside_nps.objects.filter(SURVEY_MONTH='22-Jun').update(SURVEY_MONTH='Jun-22')
+    return HttpResponse('Hello')

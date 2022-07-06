@@ -44,12 +44,13 @@ urlpatterns = [
     path('userList',views.userList,name='userList'),
     path('deleteUser',views.deleteUser,name='deleteUser'),
 
-    
-    
 
     
     
 
+    
+    
 
-    # path('',views.index,name='index'),   
+
+    path('',views.index,name='index'),   
 ]
